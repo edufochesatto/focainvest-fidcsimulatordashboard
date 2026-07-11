@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocaInvest | Dashboard Financeiro</title>
+    <style>
+        :root {
+            --primary: #1B3A5C;
+            --primary-light: #2B5A8C;
+            --secondary: #2E7D32;
+            --secondary-light: #E8F5E9;
+            --accent: #0D47A1;
+            --bg: #F0F4F8;
+            --card-bg: #FFFFFF;
+            --text: #1A1A2E;
+            --text-secondary: #6B7280;
+            --warning: #FF6B35;
+            --gold: #F59E0B;
+            --border: #E5E7EB;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            padding-bottom: 40px;
+        }
+
+        /* Header & Navigation */
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: rgba(255,255,255,0.7);
+            padding: 0.6rem 1.2rem;
+            cursor: pointer;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: var(--primary);
+        }
+
+        /* Layout Containers */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Grid System */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            border: 1px solid var(--border);
+            transition: transform 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+        }
+
+        .card-title {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-value {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .card-trend {
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .trend-up { color: var(--secondary); }
+        .trend-down { color: var(--warning); }
+
+        .card-highlight {
+            background: var(--secondary-light);
+            border-color: #C8E6C9;
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: #F9FAFB;
+            padding: 12px 16px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+            font-weight: 700;
+            background: #F9FAFB;
+        }
+
+        .highlight-cell {
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        .gold-cell {
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        /* Canvas Chart */
+        .chart-wrapper {
+            height: 300px;
+            width: 100%;
+            position: relative;
+        }
+
+        /* Simulator Styles */
+        .sim-section {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sim-section:last-child { border-bottom: none; }
+
+        .sim-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .input-label span:last-child {
+            color: var(--primary);
+            font-weight: 800;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: #D1D5DB;
+            border-radius: 5px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .text-input {
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            width: 100%;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .text-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(27, 58, 92, 0.1);
+        }
+
+        .sim-results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .result-card {
+            background: var(--secondary-light);
+            padding: 1.25rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .result-label {
+            font-size: 0.8rem;
+            color: var(--secondary);
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .result-value {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--secondary);
+        }
+
+        .gold-card {
+            background: #FFFBEB;
+            border: 1px solid #FEF3C7;
+        }
+
+        .gold-card .result-label, .gold-card .result-value {
+            color: var(--gold);
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">FocaInvest</div>
+        <nav class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab('dashboard', this)">📊 Dashboard</button>
+            <button class="tab-btn" onclick="switchTab('simulator', this)">🧮 Simulador</button>
+        </nav>
+    </header>
+
+    <div class="container">
+        
+        <!-- TELA 1: DASHBOARD -->
+        <div id="dashboard" class="tab-content active">
+            
+            <!-- Linha 1: Indicadores Principais -->
+            <div class="grid-3">
+                <div class="card">
+                    <div class="card-title">🚗 Faturamento Mensal</div>
+                    <div class="card-value">R$ 3.000.000</div>
+                </div>
+                <div class="card">
+                    <div class="card-title">💰 Custo Antes (Conta Garantida)</div>
+                    <div class="card-value">R$ 94.500</div>
+                    <div class="card-trend trend-down">3,15% da receita</div>
+                </div>
+                <div class="card">
+                    <div class="card-title">📉 Custo Depois (FIDC)</div>
+                    <div class="card-value">R$ 55.000</div>
+                    <div class="card-trend trend-up">1,83% da receita</div>
+                </div>
+            </div>
+
+            <!-- Linha 2: Resultados -->
+            <div class="grid-3">
+                <div class="card card-highlight">
+                    <div class="card-title">✅ Economia Mensal</div>
+                    <div class="card-value" style="color: var(--secondary)">R$ 39.500</div>
+                    <div class="card-trend trend-up">↑ Redução de 41,8%</div>
+                </div>
+                <div class="card card-highlight">
+                    <div class="card-title">📈 Economia Anual Projetada</div>
+                    <div class="card-value" style="color: var(--secondary)">R$ 568.000</div>
+                    <div class="card-trend trend-up">↑ Incluindo IOF</div>
+                </div>
+                <div class="card card-highlight">
+                    <div class="card-title">⭐ Aumento no Lucro Líquido</div>
+                    <div class="card-value" style="color: var(--secondary)">+14,5%</div>
+                    <div class="card-trend trend-up">↑ Impacto direto</div>
+                </div>
+            </div>
+
+            <!-- Linha 3: Tabela + Gráfico -->
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-title">Comparativo Mensal — Últimos 6 Meses</div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Mês</th>
+                                    <th>Vendas</th>
+                                    <th>Antes</th>
+                                    <th>Depois</th>
+                                    <th>Economia</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Mês 1</td><td>R$ 3.000.000</td><td>R$ 94.500</td><td>R$ 55.000</td><td class="highlight-cell">R$ 39.500</td></tr>
+                                <tr><td>Mês 2</td><td>R$ 3.100.000</td><td>R$ 98.000</td><td>R$ 56.800</td><td class="highlight-cell">R$ 41.200</td></tr>
+                                <tr><td>Mês 3</td><td>R$ 3.200.000</td><td>R$ 101.500</td><td>R$ 58.700</td><td class="highlight-cell">R$ 42.800</td></tr>
+                                <tr><td>Mês 4</td><td>R$ 3.300.000</td><td>R$ 105.000</td><td>R$ 60.500</td><td class="highlight-cell">R$ 44.500</td></tr>
+                                <tr><td>Mês 5</td><td>R$ 3.400.000</td><td>R$ 108.500</td><td>R$ 62.300</td><td class="highlight-cell">R$ 46.200</td></tr>
+                                <tr><td>Mês 6</td><td>R$ 3.500.000</td><td>R$ 112.000</td><td>R$ 64.200</td><td class="highlight-cell">R$ 47.800</td></tr>
+                                <tr>
+                                    <td>TOTAL</td>
+                                    <td>R$ 19.500.000</td>
+                                    <td>R$ 619.500</td>
+                                    <td>R$ 357.500</td>
+                                    <td class="highlight-cell">R$ 262.000</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">Custo Financeiro: Antes vs Depois</div>
+                    <div class="chart-wrapper">
+                        <canvas id="barChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Linha 4: Liquidez + Estrutura -->
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-title">Indicadores de Liquidez</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Indicador</th>
+                                <th>Antes</th>
+                                <th>Depois</th>
+                                <th>Variação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Ciclo Financeiro</td><td>27 dias</td><td>5 dias</td><td class="highlight-cell">-22 dias ✅</td></tr>
+                            <tr><td>Cap. Giro Necessário</td><td>R$ 2.7M</td><td>R$ 0.5M</td><td class="highlight-cell">-81% ✅</td></tr>
+                            <tr><td>Liquidez Corrente</td><td>1,15</td><td>1,42</td><td class="highlight-cell">+23% ✅</td></tr>
+                            <tr><td>Custo / Receita</td><td>3,3%</td><td>1,9%</td><td class="highlight-cell">-1,4 pp ✅</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card">
+                    <div class="card-title">Estrutura de Custos (Semestral)</div>
+                    <table style="margin-top: 10px;">
+                        <tr><td>Custo Financeiro Antes</td><td style="text-align: right;">R$ 619.500</td></tr>
+                        <tr><td>Custo Financeiro Depois</td><td style="text-align: right;">R$ 357.500</td></tr>
+                        <tr><td>Economia Total Semestre</td><td style="text-align: right;" class="highlight-cell">R$ 262.000</td></tr>
+                        <tr><td>IOF Economizado (est.)</td><td style="text-align: right;" class="highlight-cell">R$ 14.000</td></tr>
+                        <tr style="font-size: 1.1rem;"><td>TOTAL ECONOMIA + IOF</td><td style="text-align: right;" class="highlight-cell">R$ 276.000</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Linha 5: Comparação de Produtos -->
+            <div class="card">
+                <div class="card-title">Comparação de Produtos Estruturados</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Volume Estimado</th>
+                            <th>Taxa Estruturação</th>
+                            <th>Sua Comissão (50%)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>FIDC Exclusivo</td>
+                            <td>R$ 20.000.000</td>
+                            <td>R$ 80.000 - R$ 150.000</td>
+                            <td class="gold-cell">R$ 20.000 - R$ 37.500</td>
+                        </tr>
+                        <tr>
+                            <td>CRA (Certificado de Recebíveis)</td>
+                            <td>R$ 200.000.000</td>
+                            <td>R$ 1.000.000 - R$ 4.000.000</td>
+                            <td class="gold-cell">R$ 225.000 - R$ 1.450.000</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <!-- TELA 2: SIMULADOR -->
+        <div id="simulator" class="tab-content">
+            <div class="card">
+                <div class="sim-section">
+                    <div class="sim-title">🏢 Dados da Empresa</div>
+                    <div class="grid-3">
+                        <div class="input-group">
+                            <label class="input-label">Faturamento Mensal <span id="val-faturamento">R$ 3.000.000</span></label>
+                            <input type="range" id="in-faturamento" min="500000" max="10000000" step="100000" value="3000000">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Prazo Médio Recebimento <span id="val-prazo-rec">55 dias</span></label>
+                            <input type="range" id="in-prazo-rec" min="1" max="120" value="55">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Prazo Médio Pagamento <span id="val-prazo-pag">28 dias</span></label>
+                            <input type="range" id="in-prazo-pag" min="1" max="90" value="28">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sim-section">
+                    <div class="sim-title">🏦 Cenário Atual — Conta Garantida</div>
+                    <div class="grid-3">
+                        <div class="input-group">
+                            <label class="input-label">Taxa Juros a.m. <span id="val-taxa-cg">3,50%</span></label>
+                            <input type="range" id="in-taxa-cg" min="0.5" max="8" step="0.1" value="3.5">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">IOF <span id="val-iof">0,38%</span></label>
+                            <input type="range" id="in-iof" min="0" max="2" step="0.01" value="0.38">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Custo Financeiro Atual</label>
+                            <div id="res-custo-atual" style="font-size: 1.2rem; font-weight: 800; color: var(--warning);">R$ 0,00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sim-section">
+                    <div class="sim-title">⚡ Cenário FIDC</div>
+                    <div class="grid-3">
+                        <div class="input-group">
+                            <label class="input-label">Taxa de Desconto a.m. <span id="val-taxa-fidc">2,00%</span></label>
+                            <input type="range" id="in-taxa-fidc" min="0.5" max="6" step="0.1" value="2.0">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Custo FIDC</label>
+                            <div id="res-custo-fidc" style="font-size: 1.2rem; font-weight: 800; color: var(--secondary);">R$ 0,00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sim-section">
+                    <div class="sim-title">📊 Resultados da Otimização</div>
+                    <div class="sim-results-grid">
+                        <div class="result-card">
+                            <div class="result-label">Economia Mensal</div>
+                            <div class="result-value" id="res-eco-mensal">R$ 0,00</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Economia Anual</div>
+                            <div class="result-value" id="res-eco-anual">R$ 0,00</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Redução de Custo</div>
+                            <div class="result-value" id="res-red-custo">0%</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Impacto Lucro Líquido</div>
+                            <div class="result-value" id="res-impacto-lucro">0%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sim-section">
+                    <div class="sim-title">💰 Comissão do Indicador</div>
+                    <div class="grid-2">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div class="input-group">
+                                <label class="input-label">Taxa Estruturação (R$)</label>
+                                <input type="number" id="in-est-bruta" class="text-input" value="115000">
+                            </div>
+                            <div class="input-group">
+                                <label class="input-label">Custos Diretos (R$)</label>
+                                <input type="number" id="in-est-custos" class="text-input" value="57500">
+                            </div>
+                        </div>
+                        <div class="sim-results-grid">
+                            <div class="result-card">
+                                <div class="result-label">Lucro Líquido Estrut.</div>
+                                <div class="result-value" id="res-est-liquido" style="color: var(--primary);">R$ 0,00</div>
+                            </div>
+                            <div class="result-card gold-card">
+                                <div class="result-label">Sua Comissão (50%)</div>
+                                <div class="result-value" id="res-comissao">R$ 0,00</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- Helpers ---
+        const formatCurrency = (val) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(val);
+        const formatPercent = (val) => val.toFixed(2).replace('.', ',') + '%';
+
+        // --- Tab Logic ---
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            btn.classList.add('active');
+
+            if(tabId === 'dashboard') drawChart();
+        }
+
+        // --- Chart Logic (Canvas) ---
+        function drawChart() {
+            const canvas = document.getElementById('barChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            
+            // Set dimensions
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = 300 * dpr;
+            canvas.style.width = rect.width + 'px';
+            canvas.style.height = '300px';
+            ctx.scale(dpr, dpr);
+
+            const dataAntes = [94500, 98000, 101500, 105000, 108500, 112000];
+            const dataDepois = [55000, 56800, 58700, 60500, 62300, 64200];
+            const labels = ['M1', 'M2', 'M3', 'M4', 'M5', 'M6'];
+            
+            const padding = 40;
+            const chartWidth = rect.width - padding * 2;
+            const chartHeight = 240;
+            const maxVal = 120000;
+            
+            ctx.clearRect(0, 0, rect.width, 300);
+
+            // Draw Axes
+            ctx.strokeStyle = '#E5E7EB';
+            ctx.beginPath();
+            ctx.moveTo(padding, padding);
+            ctx.lineTo(padding, padding + chartHeight);
+            ctx.lineTo(padding + chartWidth, padding + chartHeight);
+            ctx.stroke();
+
+            const barWidth = (chartWidth / labels.length) / 3;
+            
+            labels.forEach((label, i) => {
+                const x = padding + (i * (chartWidth / labels.length)) + barWidth;
+                
+                // Bar Antes (Blue)
+                const hAntes = (dataAntes[i] / maxVal) * chartHeight;
+                ctx.fillStyle = '#1B3A5C';
+                ctx.fillRect(x, padding + chartHeight - hAntes, barWidth - 5, hAntes);
+
+                // Bar Depois (Green)
+                const hDepois = (dataDepois[i] / maxVal) * chartHeight;
+                ctx.fillStyle = '#2E7D32';
+                ctx.fillRect(x + barWidth, padding + chartHeight - hDepois, barWidth - 5, hDepois);
+
+                // Label
+                ctx.fillStyle = '#6B7280';
+                ctx.font = '10px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(label, x + barWidth, padding + chartHeight + 15);
+            });
+
+            // Legend
+            ctx.textAlign = 'left';
+            ctx.fillStyle = '#1B3A5C';
+            ctx.fillRect(padding, 10, 12, 12);
+            ctx.fillText('Custo Antes', padding + 18, 20);
+            
+            ctx.fillStyle = '#2E7D32';
+            ctx.fillRect(padding + 100, 10, 12, 12);
+            ctx.fillText('Custo Depois', padding + 118, 20);
+        }
+
+        // --- Simulator Logic ---
+        const inputs = [
+            'in-faturamento', 'in-prazo-rec', 'in-prazo-pag', 
+            'in-taxa-cg', 'in-iof', 'in-taxa-fidc', 
+            'in-est-bruta', 'in-est-custos'
+        ];
+
+        function updateSimulator() {
+            const fat = parseFloat(document.getElementById('in-faturamento').value);
+            const pRec = parseFloat(document.getElementById('in-prazo-rec').value);
+            const pPag = parseFloat(document.getElementById('in-prazo-pag').value);
+            const tCG = parseFloat(document.getElementById('in-taxa-cg').value);
+            const iof = parseFloat(document.getElementById('in-iof').value);
+            const tFIDC = parseFloat(document.getElementById('in-taxa-fidc').value);
+            const estBruta = parseFloat(document.getElementById('in-est-bruta').value) || 0;
+            const estCustos = parseFloat(document.getElementById('in-est-custos').value) || 0;
+
+            // Update Labels
+            document.getElementById('val-faturamento').innerText = formatCurrency(fat);
+            document.getElementById('val-prazo-rec').innerText = pRec + ' dias';
+            document.getElementById('val-prazo-pag').innerText = pPag + ' dias';
+            document.getElementById('val-taxa-cg').innerText = formatPercent(tCG);
+            document.getElementById('val-iof').innerText = formatPercent(iof);
+            document.getElementById('val-taxa-fidc').innerText = formatPercent(tFIDC);
+
+            // Calculations
+            // CustoAtual = (Faturamento × (PrazoRec - PrazoPag)/30) × (TaxaCG/100 + IOF/100)
+            const gap = Math.max(0, pRec - pPag);
+            const custoAtual = (fat * (gap / 30)) * ((tCG + iof) / 100);
+            
+            // CustoFIDC = (Faturamento × PrazoRec/30) × (TxDesconto/100)
+            const custoFidc = (fat * (pRec / 30)) * (tFIDC / 100);
+
+            const ecoMensal = custoAtual - custoFidc;
+            const ecoAnual = ecoMensal * 12;
+            const redCusto = custoAtual > 0 ? (ecoMensal / custoAtual) * 100 : 0;
+            
+            // Impacto Lucro: EconomiaMensal / (Faturamento * 0.38 - 750000) * 100
+            // (Simulando uma margem operacional de 38% menos custos fixos de 750k)
+            const lucroEstimado = (fat * 0.38) - 750000;
+            const impactoLucro = lucroEstimado > 0 ? (ecoMensal / lucroEstimado) * 100 : 0;
+
+            const estLiquido = estBruta - estCustos;
+            const comissao = estLiquido * 0.5;
+
+            // Update Results
+            document.getElementById('res-custo-atual').innerText = formatCurrency(custoAtual);
+            document.getElementById('res-custo-fidc').innerText = formatCurrency(custoFidc);
+            document.getElementById('res-eco-mensal').innerText = formatCurrency(ecoMensal);
+            document.getElementById('res-eco-anual').innerText = formatCurrency(ecoAnual);
+            document.getElementById('res-red-custo').innerText = formatPercent(redCusto);
+            document.getElementById('res-impacto-lucro').innerText = (impactoLucro > 0 ? '+' : '') + formatPercent(impactoLucro);
+            document.getElementById('res-est-liquido').innerText = formatCurrency(estLiquido);
+            document.getElementById('res-comissao').innerText = formatCurrency(comissao);
+        }
+
+        // Initialize
+        inputs.forEach(id => {
+            document.getElementById(id).addEventListener('input', updateSimulator);
+        });
+
+        window.onload = () => {
+            drawChart();
+            updateSimulator();
+        };
+
+        window.onresize = drawChart;
+    </script>
+</body>
+</html>
