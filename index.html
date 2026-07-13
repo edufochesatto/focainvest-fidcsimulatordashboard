@@ -11,7 +11,7 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',system-ui,-apple-system,sans-serif}
 body{background:#0f172a;color:#e2e8f0;min-height:100vh;padding:20px}
-.container{max-width:920px;margin:0 auto}
+.container{max-width:960px;margin:0 auto}
 .logo{font-size:22px;font-weight:800;color:#f1c40f;display:flex;align-items:center;gap:8px;margin-bottom:20px}
 .logo span{font-size:24px}
 
@@ -27,7 +27,7 @@ body{background:#0f172a;color:#e2e8f0;min-height:100vh;padding:20px}
 
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:16px}
 @media(max-width:640px){.grid-2{grid-template-columns:1fr}}
-@media(max-width:480px){.grid-cards{grid-template-columns:1fr}.grid-2{grid-template-columns:1fr}}
+@media(max-width:480px){.grid-cards{grid-template-columns:1fr}.grid-2{grid-template-columns:1fr}.grid-indicadores{grid-template-columns:1fr}}
 
 .input-group{margin-bottom:16px}
 .input-group label{display:flex;justify-content:space-between;font-size:14px;color:#cbd5e1;margin-bottom:4px}
@@ -35,17 +35,18 @@ body{background:#0f172a;color:#e2e8f0;min-height:100vh;padding:20px}
 .input-group input[type=range]{width:100%;accent-color:#3b82f6;height:6px;border-radius:3px}
 .input-group .dica{font-size:11px;color:#64748b;margin-top:2px}
 
-.valor-digitavel{display:flex;align-items:center;gap:8px;margin-bottom:4px}
-.valor-digitavel input[type=number]{flex:1;padding:10px 14px;background:#0f172a;border:1px solid #334155;border-radius:8px;color:#e2e8f0;font-size:16px;font-weight:600;text-align:center;-moz-appearance:textfield}
-.valor-digitavel input[type=number]::-webkit-inner-spin-button,
-.valor-digitavel input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
-.valor-digitavel input[type=number]:focus{outline:none;border-color:#3b82f6}
-.valor-digitavel .moeda{font-size:14px;font-weight:600;color:#94a3b8}
+/* Input formatado com máscara */
+.input-valor-wrap{position:relative;margin-bottom:6px}
+.input-valor-wrap .prefixo{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;font-weight:700;color:#94a3b8;pointer-events:none;z-index:2}
+.input-valor-wrap input[type=text]{width:100%;padding:12px 14px 12px 42px;background:#0f172a;border:1px solid #334155;border-radius:8px;color:#e2e8f0;font-size:18px;font-weight:700;text-align:left;outline:none;transition:border .2s}
+.input-valor-wrap input[type=text]:focus{border-color:#3b82f6;box-shadow:0 0 0 2px rgba(59,130,246,.15)}
+.input-valor-wrap input[type=text]::placeholder{color:#475569;font-weight:400}
 
 .iof-fixo{display:flex;align-items:center;justify-content:space-between;background:#0f172a;border-radius:8px;padding:10px 14px;border:1px solid #334155;margin-bottom:16px}
 .iof-fixo .label{font-size:13px;color:#94a3b8}
 .iof-fixo .valor{font-size:15px;font-weight:700;color:#f59e0b}
 
+/* Box de resultado principal */
 .resultao{background:linear-gradient(135deg,#064e3b,#022c22);border:2px solid #10b981;border-radius:12px;padding:20px;text-align:center;margin-bottom:16px}
 .resultao .r-label{font-size:13px;color:#94a3b8;margin-bottom:2px}
 .resultao .r-valor{font-size:32px;font-weight:800;color:#10b981}
@@ -62,6 +63,24 @@ body{background:#0f172a;color:#e2e8f0;min-height:100vh;padding:20px}
 .comp-item .cp-valor{font-size:20px;font-weight:700;margin-top:2px}
 .comp-item.destaque{border-color:#10b981;background:linear-gradient(135deg,#064e3b,#022c22)}
 .comp-item.destaque .cp-valor{color:#10b981}
+
+/* Indicadores de liquidez e caixa */
+.grid-indicadores{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.indicador-card{background:#0f172a;border-radius:10px;padding:14px;border-left:3px solid #3b82f6;display:flex;justify-content:space-between;align-items:center}
+.indicador-card.verde{border-left-color:#10b981}
+.indicador-card .ic-left{display:flex;flex-direction:column;gap:1px}
+.indicador-card .ic-label{font-size:12px;color:#94a3b8}
+.indicador-card .ic-desc{font-size:11px;color:#64748b}
+.indicador-card .ic-right{text-align:right}
+.indicador-card .ic-valor{font-size:17px;font-weight:700}
+.indicador-card .ic-sub{font-size:10px;color:#64748b}
+
+.comp-dias{background:#0f172a;border-radius:10px;padding:16px;border:1px solid #334155;margin-bottom:16px;display:flex;justify-content:space-around;align-items:center;flex-wrap:wrap;gap:12px}
+.comp-dias-item{text-align:center}
+.comp-dias-item .cd-label{font-size:11px;color:#94a3b8;margin-bottom:2px}
+.comp-dias-item .cd-valor{font-size:28px;font-weight:800}
+.comp-dias-item .cd-sub{font-size:10px;color:#64748b;margin-top:1px}
+.comp-dias-seta{font-size:24px;color:#475569}
 
 .chart-wrap{position:relative;height:260px;margin-top:12px}
 .chart-sub{text-align:center;font-size:11px;color:#64748b;margin-top:4px}
@@ -90,9 +109,11 @@ body{background:#fff;padding:10px}
 .comp-item.destaque{background:#f0fdf4!important;border-color:#10b981!important}
 .info-box{background:#eff6ff!important;border-color:#3b82f6!important;color:#1e40af!important}
 .ir-box{background:#fffbeb!important;border-color:#f59e0b!important;color:#92400e!important}
-.tabs,.tab-btn{display:none!important}
+.tabs,.tab-btn,.simulador-section{display:none!important}
 .tab-content{display:block!important}
-.valor-digitavel input[type=number]{background:#f1f5f9!important;color:#000!important;border-color:#ccc!important}
+.input-valor-wrap input[type=text]{background:#f1f5f9!important;color:#000!important;border-color:#ccc!important}
+.indicador-card{background:#f1f5f9!important}
+.comp-dias{background:#f1f5f9!important}
 }
 </style>
 </head>
@@ -108,16 +129,16 @@ body{background:#fff;padding:10px}
   <!-- ===== TAB 1: CRÉDITO ===== -->
   <div id="tab-credito" class="tab-content active">
     <div class="card">
-      <div class="card-title">⚙️ Parâmetros</div>
+      <div class="card-title">⚙️ Carteira de Recebíveis</div>
       <div class="grid-2">
         <div>
           <div class="input-group">
-            <label>📋 Valor a Receber</label>
-            <div class="valor-digitavel">
-              <span class="moeda">R$</span>
-              <input type="number" id="valorInput" value="5000000" step="100000" min="5000000" oninput="valorInputChange()">
+            <label>📋 Valor Total a Receber</label>
+            <div class="input-valor-wrap">
+              <span class="prefixo">R$</span>
+              <input type="text" id="valorInput" value="5.000.000" oninput="mascararValor(this)" onfocus="this.select()">
             </div>
-            <input type="range" id="valorSlider" min="5000000" max="100000000" step="500000" value="5000000" oninput="valorSliderChange()">
+            <input type="range" id="valorSlider" min="5000000" max="100000000" step="500000" value="5000000" oninput="sliderValorChange()">
           </div>
           <div class="input-group">
             <label>📅 Prazo Médio de Recebimento <span id="prazoLabel">45</span> dias</label>
@@ -143,7 +164,75 @@ body{background:#fff;padding:10px}
         <span class="valor">0,38%</span>
       </div>
 
-      <div class="resultao">
+      <!-- COMPARAÇÃO DE PRAZO -->
+      <div style="font-size:13px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">⏱️ Comparação de Prazo</div>
+      <div class="comp-dias">
+        <div class="comp-dias-item">
+          <div class="cd-label">📅 Antes (Conta Garantida)</div>
+          <div class="cd-valor color-red" id="prazoAntes">45</div>
+          <div class="cd-sub">dias para receber</div>
+        </div>
+        <div class="comp-dias-seta">→</div>
+        <div class="comp-dias-item">
+          <div class="cd-label">⚡ Depois (FIDC)</div>
+          <div class="cd-valor color-green">2</div>
+          <div class="cd-sub">dias para receber</div>
+        </div>
+        <div class="comp-dias-seta">→</div>
+        <div class="comp-dias-item">
+          <div class="cd-label">📈 Ganho</div>
+          <div class="cd-valor color-yellow" id="prazoGanho">−43</div>
+          <div class="cd-sub" id="prazoGanhoSub">dias (−95,6%)</div>
+        </div>
+      </div>
+
+      <!-- INDICADORES DE LIQUIDEZ E CAIXA -->
+      <div style="font-size:13px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">💧 Indicadores de Liquidez e Caixa</div>
+      <div class="grid-indicadores">
+        <div class="indicador-card verde">
+          <div class="ic-left">
+            <span class="ic-label">🔄 Ciclo de Caixa</span>
+            <span class="ic-desc">Tempo do desembolso ao recebimento</span>
+          </div>
+          <div class="ic-right">
+            <div class="ic-valor" id="cicloCaixa">45</div>
+            <div class="ic-sub" id="cicloCaixaSub">dias → 2 dias</div>
+          </div>
+        </div>
+        <div class="indicador-card verde">
+          <div class="ic-left">
+            <span class="ic-label">💰 Necessidade de Capital de Giro</span>
+            <span class="ic-desc">Recursos presos no recebimento</span>
+          </div>
+          <div class="ic-right">
+            <div class="ic-valor color-green" id="ncgAntes">R$ 5.000.000</div>
+            <div class="ic-sub" id="ncgDepois">↓ R$ 222.222 com FIDC</div>
+          </div>
+        </div>
+        <div class="indicador-card verde">
+          <div class="ic-left">
+            <span class="ic-label">📊 Liquidez Imediata</span>
+            <span class="ic-desc">Disponibilidade para pagamentos</span>
+          </div>
+          <div class="ic-right">
+            <div class="ic-valor color-green" id="liquidezValor">Alta</div>
+            <div class="ic-sub" id="liquidezSub">Recebe em 2 dias ⚡</div>
+          </div>
+        </div>
+        <div class="indicador-card verde">
+          <div class="ic-left">
+            <span class="ic-label">🏦 Custo do Capital Giro</span>
+            <span class="ic-desc">Economia com a troca</span>
+          </div>
+          <div class="ic-right">
+            <div class="ic-valor color-green" id="custoGiroEconomia">R$ 217.500</div>
+            <div class="ic-sub">economia mensal</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESULTADO PRINCIPAL -->
+      <div class="resultao" style="margin-top:16px">
         <div class="r-label">💰 Economia Mensal</div>
         <div class="r-valor" id="ecoMensal">R$ 217.500</div>
         <div class="r-sub">Antecipando pelo FIDC em vez da Conta Garantida</div>
@@ -161,7 +250,7 @@ body{background:#fff;padding:10px}
         </div>
       </div>
 
-      <div style="font-size:13px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">⚖️ Comparativo</div>
+      <div style="font-size:13px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">⚖️ Comparativo de Custo</div>
       <div class="comp-grid">
         <div class="comp-item">
           <div class="cp-label">Custo Conta Garantida</div>
@@ -260,23 +349,34 @@ const VALOR_MAX = 100000000;
 
 function fmt(v){return 'R$ '+Math.round(v).toLocaleString('pt-BR')}
 
-function valorInputChange(){
-  const val = parseFloat(document.getElementById('valorInput').value) || VALOR_MIN;
+// Máscara de valor com pontos e vírgula
+function mascararValor(el){
+  // Remove tudo que não é dígito
+  let raw = el.value.replace(/\D/g, '');
+  if(raw === '') raw = '0';
+  // Converte para número
+  let num = parseInt(raw, 10);
+  if(isNaN(num)) num = 0;
+  // Aplica min/max
+  num = Math.min(Math.max(num, VALOR_MIN), VALOR_MAX);
+  // Formata com pontos
+  el.value = num.toLocaleString('pt-BR').replace(',', '');
+  // Sincroniza o slider
   const slider = document.getElementById('valorSlider');
-  const capped = Math.min(Math.max(val, VALOR_MIN), VALOR_MAX);
-  slider.value = capped;
-  document.getElementById('valorInput').value = capped;
+  slider.value = num;
   atualizarCredito();
 }
 
-function valorSliderChange(){
-  const val = parseFloat(document.getElementById('valorSlider').value) || VALOR_MIN;
-  document.getElementById('valorInput').value = val;
+function sliderValorChange(){
+  const val = parseInt(document.getElementById('valorSlider').value) || VALOR_MIN;
+  const input = document.getElementById('valorInput');
+  input.value = val.toLocaleString('pt-BR').replace(',', '');
   atualizarCredito();
 }
 
 function atualizarCredito(){
-  const valor = parseFloat(document.getElementById('valorSlider').value) || VALOR_MIN;
+  // Pega valor do slider (já sincronizado)
+  const valor = parseInt(document.getElementById('valorSlider').value) || VALOR_MIN;
   const prazo = parseInt(document.getElementById('prazoMedio').value)||45;
   const taxaCg = parseFloat(document.getElementById('taxaCg').value)||0;
   const taxaFidc = parseFloat(document.getElementById('taxaFidc').value)||0;
@@ -293,6 +393,7 @@ function atualizarCredito(){
   const ecoAnual = economia * 12;
   const bFiscal = economia > 0 ? economia * 0.34 : 0;
 
+  // Economia
   document.getElementById('ecoMensal').textContent = fmt(economia);
   const elEco = document.getElementById('ecoMensal');
   elEco.style.color = economia > 0 ? '#10b981' : '#ef4444';
@@ -301,6 +402,39 @@ function atualizarCredito(){
   document.getElementById('bfCard').textContent = fmt(bFiscal);
   document.getElementById('custoCG').textContent = fmt(custoCG);
   document.getElementById('custoFIDC').textContent = fmt(custoFIDC);
+
+  // Comparação de prazo
+  const difPrazo = prazo - 2;
+  const pctPrazo = prazo ? ((prazo - 2) / prazo * 100) : 0;
+  document.getElementById('prazoAntes').textContent = prazo;
+  document.getElementById('prazoGanho').textContent = '−' + difPrazo;
+  document.getElementById('prazoGanhoSub').textContent = 'dias (−' + pctPrazo.toFixed(1) + '%)';
+
+  // Indicadores de liquidez
+  document.getElementById('cicloCaixa').textContent = prazo;
+  document.getElementById('cicloCaixaSub').textContent = 'dias → 2 dias';
+
+  // NCG = valor total preso pelo prazo médio
+  const ncgAntes = valor;
+  const ncgFidc = valor * (2 / prazo);
+  document.getElementById('ncgAntes').textContent = fmt(ncgAntes);
+  document.getElementById('ncgDepois').textContent = '↓ ' + fmt(ncgFidc) + ' com FIDC';
+
+  // Liquidez
+  if(prazo > 60){
+    document.getElementById('liquidezValor').textContent = 'Crítica';
+    document.getElementById('liquidezValor').style.color = '#ef4444';
+  } else if(prazo > 30){
+    document.getElementById('liquidezValor').textContent = 'Moderada';
+    document.getElementById('liquidezValor').style.color = '#f59e0b';
+  } else {
+    document.getElementById('liquidezValor').textContent = 'Alta';
+    document.getElementById('liquidezValor').style.color = '#10b981';
+  }
+  document.getElementById('liquidezSub').textContent = 'Recebe em 2 dias ⚡';
+
+  // Custo do capital de giro
+  document.getElementById('custoGiroEconomia').textContent = fmt(economia);
 
   // Pré-preenche a aba de aplicação
   const valAplic = document.getElementById('valAplicar');
