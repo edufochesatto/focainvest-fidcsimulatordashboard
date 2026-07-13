@@ -35,6 +35,13 @@ body{background:#0f172a;color:#e2e8f0;min-height:100vh;padding:20px}
 .input-group input[type=range]{width:100%;accent-color:#3b82f6;height:6px;border-radius:3px}
 .input-group .dica{font-size:11px;color:#64748b;margin-top:2px}
 
+.valor-digitavel{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.valor-digitavel input[type=number]{flex:1;padding:10px 14px;background:#0f172a;border:1px solid #334155;border-radius:8px;color:#e2e8f0;font-size:16px;font-weight:600;text-align:center;-moz-appearance:textfield}
+.valor-digitavel input[type=number]::-webkit-inner-spin-button,
+.valor-digitavel input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.valor-digitavel input[type=number]:focus{outline:none;border-color:#3b82f6}
+.valor-digitavel .moeda{font-size:14px;font-weight:600;color:#94a3b8}
+
 .iof-fixo{display:flex;align-items:center;justify-content:space-between;background:#0f172a;border-radius:8px;padding:10px 14px;border:1px solid #334155;margin-bottom:16px}
 .iof-fixo .label{font-size:13px;color:#94a3b8}
 .iof-fixo .valor{font-size:15px;font-weight:700;color:#f59e0b}
@@ -85,6 +92,7 @@ body{background:#fff;padding:10px}
 .ir-box{background:#fffbeb!important;border-color:#f59e0b!important;color:#92400e!important}
 .tabs,.tab-btn{display:none!important}
 .tab-content{display:block!important}
+.valor-digitavel input[type=number]{background:#f1f5f9!important;color:#000!important;border-color:#ccc!important}
 }
 </style>
 </head>
@@ -104,8 +112,12 @@ body{background:#fff;padding:10px}
       <div class="grid-2">
         <div>
           <div class="input-group">
-            <label>📋 Valor a Receber <span id="valorLabel">R$ 500.000</span></label>
-            <input type="range" id="valorReceber" min="50000" max="5000000" step="10000" value="500000" oninput="atualizarCredito()">
+            <label>📋 Valor a Receber</label>
+            <div class="valor-digitavel">
+              <span class="moeda">R$</span>
+              <input type="number" id="valorInput" value="5000000" step="100000" min="5000000" oninput="valorInputChange()">
+            </div>
+            <input type="range" id="valorSlider" min="5000000" max="100000000" step="500000" value="5000000" oninput="valorSliderChange()">
           </div>
           <div class="input-group">
             <label>📅 Prazo Médio de Recebimento <span id="prazoLabel">45</span> dias</label>
@@ -133,18 +145,18 @@ body{background:#fff;padding:10px}
 
       <div class="resultao">
         <div class="r-label">💰 Economia Mensal</div>
-        <div class="r-valor" id="ecoMensal">R$ 21.750</div>
+        <div class="r-valor" id="ecoMensal">R$ 217.500</div>
         <div class="r-sub">Antecipando pelo FIDC em vez da Conta Garantida</div>
       </div>
 
       <div class="grid-cards">
         <div class="card-info">
           <div class="c-label">📈 Economia Projetada (12 meses)</div>
-          <div class="c-valor color-yellow" id="ecoAnual">R$ 261.000</div>
+          <div class="c-valor color-yellow" id="ecoAnual">R$ 2.610.000</div>
         </div>
         <div class="card-info">
           <div class="c-label">🏛️ Benefício Fiscal (IRPJ+CSLL — 34%)</div>
-          <div class="c-valor color-orange" id="bfCard">R$ 88.740</div>
+          <div class="c-valor color-orange" id="bfCard">R$ 887.400</div>
           <div style="font-size:10px;color:#64748b">Apenas Lucro Real</div>
         </div>
       </div>
@@ -153,12 +165,12 @@ body{background:#fff;padding:10px}
       <div class="comp-grid">
         <div class="comp-item">
           <div class="cp-label">Custo Conta Garantida</div>
-          <div class="cp-valor color-red" id="custoCG">R$ 29.250</div>
+          <div class="cp-valor color-red" id="custoCG">R$ 292.500</div>
           <div style="font-size:10px;color:#64748b">com IOF</div>
         </div>
         <div class="comp-item destaque">
           <div class="cp-label">Custo FIDC</div>
-          <div class="cp-valor" id="custoFIDC">R$ 7.500</div>
+          <div class="cp-valor" id="custoFIDC">R$ 75.000</div>
           <div style="font-size:10px;color:#94a3b8">sem IOF</div>
         </div>
       </div>
@@ -177,8 +189,8 @@ body{background:#fff;padding:10px}
       <div class="grid-2">
         <div>
           <div class="input-group">
-            <label>💰 Valor a Aplicar (por mês) <span id="valAplicLabel">R$ 21.750</span></label>
-            <input type="range" id="valAplicar" min="1000" max="500000" step="500" value="21750" oninput="atualizarAplicacao()">
+            <label>💰 Valor a Aplicar (por mês) <span id="valAplicLabel">R$ 217.500</span></label>
+            <input type="range" id="valAplicar" min="1000" max="5000000" step="1000" value="217500" oninput="atualizarAplicacao()">
             <div class="dica">Pré-preenchido com a economia mensal — ajuste se quiser</div>
           </div>
         </div>
@@ -206,26 +218,26 @@ body{background:#fff;padding:10px}
 
       <div class="resultao">
         <div class="r-label">💰 Valor Total Acumulado</div>
-        <div class="r-valor" id="totalAcumulado" style="color:#f1c40f">R$ 25.245</div>
+        <div class="r-valor" id="totalAcumulado" style="color:#f1c40f">R$ 252.450</div>
         <div class="r-sub">Aplicação mensal durante o período escolhido</div>
       </div>
 
       <div class="grid-cards">
         <div class="card-info">
           <div class="c-label">Total Investido</div>
-          <div class="c-valor color-blue" id="totalAplicado">R$ 261.000</div>
+          <div class="c-valor color-blue" id="totalAplicado">R$ 2.610.000</div>
         </div>
         <div class="card-info">
           <div class="c-label">Rendimento Bruto</div>
-          <div class="c-valor color-green" id="rendBruto">R$ 26.567</div>
+          <div class="c-valor color-green" id="rendBruto">R$ 265.670</div>
         </div>
         <div class="card-info">
           <div class="c-label">(−) IRRF (15%)</div>
-          <div class="c-valor color-red" id="irrfValor">−R$ 3.985</div>
+          <div class="c-valor color-red" id="irrfValor">−R$ 39.850</div>
         </div>
         <div class="card-info">
           <div class="c-label">🏛️ Compensável no IRPJ</div>
-          <div class="c-valor color-orange" id="compensaIR">R$ 3.985</div>
+          <div class="c-valor color-orange" id="compensaIR">R$ 39.850</div>
         </div>
       </div>
 
@@ -243,16 +255,33 @@ body{background:#fff;padding:10px}
 <script>
 let chartCredito = null;
 
+const VALOR_MIN = 5000000;
+const VALOR_MAX = 100000000;
+
 function fmt(v){return 'R$ '+Math.round(v).toLocaleString('pt-BR')}
 
+function valorInputChange(){
+  const val = parseFloat(document.getElementById('valorInput').value) || VALOR_MIN;
+  const slider = document.getElementById('valorSlider');
+  const capped = Math.min(Math.max(val, VALOR_MIN), VALOR_MAX);
+  slider.value = capped;
+  document.getElementById('valorInput').value = capped;
+  atualizarCredito();
+}
+
+function valorSliderChange(){
+  const val = parseFloat(document.getElementById('valorSlider').value) || VALOR_MIN;
+  document.getElementById('valorInput').value = val;
+  atualizarCredito();
+}
+
 function atualizarCredito(){
-  const valor = parseFloat(document.getElementById('valorReceber').value)||0;
+  const valor = parseFloat(document.getElementById('valorSlider').value) || VALOR_MIN;
   const prazo = parseInt(document.getElementById('prazoMedio').value)||45;
   const taxaCg = parseFloat(document.getElementById('taxaCg').value)||0;
   const taxaFidc = parseFloat(document.getElementById('taxaFidc').value)||0;
   const iof = 0.38;
 
-  document.getElementById('valorLabel').textContent = fmt(valor);
   document.getElementById('prazoLabel').textContent = prazo;
   document.getElementById('taxaCgLabel').textContent = taxaCg.toFixed(1)+'%';
   document.getElementById('taxaFidcLabel').textContent = taxaFidc.toFixed(1)+'%';
@@ -273,10 +302,10 @@ function atualizarCredito(){
   document.getElementById('custoCG').textContent = fmt(custoCG);
   document.getElementById('custoFIDC').textContent = fmt(custoFIDC);
 
-  // Pré-preenche a aba de aplicação com a economia mensal (capado no máximo do slider)
+  // Pré-preenche a aba de aplicação
   const valAplic = document.getElementById('valAplicar');
   const ecoMensalNum = Math.round(economia);
-  const capped = Math.min(Math.max(ecoMensalNum, 1000), 500000);
+  const capped = Math.min(Math.max(ecoMensalNum, 1000), 5000000);
   valAplic.value = capped;
   document.getElementById('valAplicLabel').textContent = fmt(capped);
 
