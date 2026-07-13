@@ -4,109 +4,121 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FocaInvest — Simulador FIDC</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js">
+</script>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
-  body { background: #0f172a; color: #e2e8f0; min-height: 100vh; }
-  .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-  .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; flex-wrap: wrap; gap: 12px; }
-  .logo { font-size: 26px; font-weight: 800; color: #f1c40f; display: flex; align-items: center; gap: 8px; }
-  .logo span { font-size: 28px; }
-  .btn-print { padding: 8px 18px; border-radius: 8px; border: 1px solid #334155; background: #1e293b; color: #e2e8f0; cursor: pointer; font-size: 14px; display: flex; align-items: center; gap: 6px; }
-  .btn-print:hover { background: #334155; }
-  .tabs { display: flex; gap: 4px; background: #1e293b; border-radius: 12px; padding: 4px; margin-bottom: 28px; }
-  .tab-btn { flex: 1; padding: 12px 20px; border: none; background: transparent; color: #94a3b8; font-size: 15px; font-weight: 600; cursor: pointer; border-radius: 8px; transition: all .2s; text-align: center; }
-  .tab-btn:hover { color: #e2e8f0; background: #334155; }
-  .tab-btn.active { background: #3b82f6; color: #fff; box-shadow: 0 4px 12px rgba(59,130,246,.3); }
-  .tab-content { display: none; }
-  .tab-content.active { display: block; }
-  .card { background: #1e293b; border-radius: 14px; padding: 20px; margin-bottom: 18px; border: 1px solid #334155; }
-  .card-title { font-size: 14px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
-  .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 20px; }
-  .stat-card { background: linear-gradient(135deg, #1e293b, #1a2332); border-radius: 12px; padding: 18px; border: 1px solid #334155; text-align: center; }
-  .stat-card.highlight-blue { background: linear-gradient(135deg, #1e3a5f, #0f2744); border-color: #3b82f6; }
-  .stat-card.highlight-green { background: linear-gradient(135deg, #064e3b, #022c22); border-color: #10b981; }
-  .stat-card.highlight-orange { background: linear-gradient(135deg, #5c3a0e, #3d2608); border-color: #f59e0b; }
-  .stat-card.highlight-purple { background: linear-gradient(135deg, #3b0764, #240442); border-color: #a855f7; }
-  .stat-card.disabled { background: #1e293b; border-color: #475569; opacity: .6; }
-  .stat-label { font-size: 12px; color: #94a3b8; margin-bottom: 4px; }
-  .stat-value { font-size: 22px; font-weight: 800; }
-  .stat-sub { font-size: 11px; color: #64748b; margin-top: 4px; }
-  .color-green { color: #10b981; }
-  .color-red { color: #ef4444; }
-  .color-blue { color: #60a5fa; }
-  .color-yellow { color: #f1c40f; }
-  .color-purple { color: #a855f7; }
-  .color-orange { color: #f59e0b; }
-  .color-muted { color: #64748b; }
-  .slider-group { margin-bottom: 14px; }
-  .slider-group label { display: flex; justify-content: space-between; font-size: 14px; color: #cbd5e1; margin-bottom: 4px; }
-  .slider-group label span { color: #f1c40f; font-weight: 700; }
-  input[type=range] { width: 100%; accent-color: #3b82f6; height: 6px; border-radius: 3px; }
-  .slider-lock { opacity: .5; pointer-events: none; }
-  .slider-value { font-weight: 700; color: #f1c40f; }
-  input[type=number] { width: 100%; padding: 6px 10px; background: #0f172a; border: 1px solid #334155; border-radius: 6px; color: #e2e8f0; font-size: 13px; }
-  table { width: 100%; border-collapse: collapse; }
-  th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #334155; font-size: 14px; }
-  th { color: #94a3b8; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: .3px; }
-  td { color: #e2e8f0; }
-  .toggle-wrap { display: flex; align-items: center; gap: 10px; margin: 12px 0; }
-  .toggle { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
-  .toggle input { opacity: 0; width: 0; height: 0; }
-  .toggle .slider-toggle { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #475569; border-radius: 24px; cursor: pointer; transition: .3s; }
-  .toggle .slider-toggle::before { content: ''; position: absolute; height: 18px; width: 18px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: .3s; }
-  .toggle input:checked + .slider-toggle { background: #10b981; }
-  .toggle input:checked + .slider-toggle::before { transform: translateX(20px); }
-  .toggle-label { font-size: 14px; color: #cbd5e1; font-weight: 600; }
-  .toggle-label.locked { color: #10b981; }
-  .toggle-sub { font-size: 11px; color: #64748b; margin-top: 2px; }
-  .chart-wrap { position: relative; height: 320px; }
-  .step-num { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; background: #3b82f6; color: #fff; font-size: 13px; font-weight: 700; margin-right: 8px; }
-  .step-title { font-size: 16px; font-weight: 700; color: #f1c40f; }
-  .consolidado-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
-  .consol-item { display: flex; justify-content: space-between; padding: 10px 14px; background: #0f172a; border-radius: 8px; border-left: 3px solid #3b82f6; }
-  .consol-item.total { border-left-color: #f1c40f; background: #1e3a5f; font-weight: 700; }
-  .consol-label { color: #94a3b8; font-size: 13px; }
-  .consol-value { color: #e2e8f0; font-weight: 600; font-size: 14px; }
-  .consol-item.total .consol-value { color: #f1c40f; font-size: 16px; }
-  .resumo-aplicacao { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin: 16px 0; }
-  .resumo-card { background: #0f172a; border-radius: 10px; padding: 14px; text-align: center; border: 1px solid #334155; }
-  .resumo-label { font-size: 11px; color: #64748b; }
-  .resumo-value { font-size: 20px; font-weight: 700; margin-top: 4px; }
-  .app-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
-  .app-table th { background: #0f172a; padding: 10px 12px; font-size: 12px; text-transform: uppercase; color: #94a3b8; text-align: center; }
-  .app-table td { padding: 10px 12px; text-align: center; border-bottom: 1px solid #1e293b; font-size: 13px; }
-  .app-table tr:last-child td { border-bottom: none; }
-  .app-table tr:hover td { background: #1e293b; }
-  .lucro-box { background: linear-gradient(135deg, #064e3b, #022c22); border: 2px solid #10b981; border-radius: 12px; padding: 16px; margin-top: 12px; text-align: center; }
-  .lucro-label { font-size: 13px; color: #94a3b8; }
-  .lucro-value { font-size: 28px; font-weight: 800; color: #10b981; margin: 4px 0; }
-  .lucro-sub { font-size: 12px; color: #64748b; }
-  .radio-group { display: flex; gap: 16px; flex-wrap: wrap; margin: 10px 0 16px; }
-  .radio-group label { display: flex; align-items: center; gap: 6px; font-size: 14px; color: #cbd5e1; cursor: pointer; padding: 8px 14px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; transition: all .2s; }
-  .radio-group label:hover { border-color: #3b82f6; }
-  .radio-group input[type=radio] { accent-color: #3b82f6; width: 16px; height: 16px; }
-  .radio-group label.selected { border-color: #3b82f6; background: #1e3a5f; color: #60a5fa; }
-  .subtitle { font-size: 12px; color: #64748b; margin-top: -10px; margin-bottom: 14px; font-style: italic; }
-  @media print {
-    .tabs, .tab-btn, .simulador-section, .btn-print { display: none !important; }
-    .tab-content { display: block !important; }
-    .container { max-width: 100%; padding: 10px; }
-    body { background: #fff; color: #000; }
-    .card { background: #f8fafc !important; border-color: #ddd !important; }
-    .stat-card { background: #f1f5f9 !important; }
-    .stat-value { color: #000 !important; }
-    .stat-card.disabled { opacity: 1 !important; background: #f1f5f9 !important; }
-    .consol-item { background: #f1f5f9 !important; }
-    .consol-item.total { background: #e2e8f0 !important; }
-    .lucro-box { background: #f0fdf4 !important; border-color: #10b981 !important; }
-    .lucro-value { color: #059669 !important; }
-    .consol-item .consol-value { color: #000 !important; }
-    .consol-item.total .consol-value { color: #b45309 !important; }
-    .radio-group label { border-color: #ccc !important; background: #f1f5f9 !important; }
-    .radio-group label.selected { border-color: #3b82f6 !important; background: #dbeafe !important; }
-  }
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',system-ui,-apple-system,sans-serif}
+body{background:#0f172a;color:#e2e8f0;min-height:100vh}
+.container{max-width:1200px;margin:0 auto;padding:20px}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;flex-wrap:wrap;gap:12px}
+.logo{font-size:26px;font-weight:800;color:#f1c40f;display:flex;align-items:center;gap:8px}
+.logo span{font-size:28px}
+.header-actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn-print{padding:8px 18px;border-radius:8px;border:1px solid #334155;background:#1e293b;color:#e2e8f0;cursor:pointer;font-size:14px;display:flex;align-items:center;gap:6px}
+.btn-print:hover{background:#334155}
+.tabs{display:flex;gap:4px;background:#1e293b;border-radius:12px;padding:4px;margin-bottom:28px}
+.tab-btn{flex:1;padding:12px 20px;border:none;background:transparent;color:#94a3b8;font-size:15px;font-weight:600;cursor:pointer;border-radius:8px;transition:all .2s;text-align:center}
+.tab-btn:hover{color:#e2e8f0;background:#334155}
+.tab-btn.active{background:#3b82f6;color:#fff;box-shadow:0 4px 12px rgba(59,130,246,.3)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+.card{background:#1e293b;border-radius:14px;padding:20px;margin-bottom:18px;border:1px solid #334155}
+.card-title{font-size:14px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.grid-4{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:20px}
+.stat-card{background:linear-gradient(135deg,#1e293b,#1a2332);border-radius:12px;padding:18px;border:1px solid #334155;text-align:center}
+.stat-card.highlight-blue{background:linear-gradient(135deg,#1e3a5f,#0f2744);border-color:#3b82f6}
+.stat-card.highlight-green{background:linear-gradient(135deg,#064e3b,#022c22);border-color:#10b981}
+.stat-card.highlight-orange{background:linear-gradient(135deg,#5c3a0e,#3d2608);border-color:#f59e0b}
+.stat-card.highlight-purple{background:linear-gradient(135deg,#3b0764,#240442);border-color:#a855f7}
+.stat-card.disabled{background:#1e293b;border-color:#475569;opacity:.6}
+.stat-label{font-size:12px;color:#94a3b8;margin-bottom:4px}
+.stat-value{font-size:22px;font-weight:800}
+.stat-sub{font-size:11px;color:#64748b;margin-top:4px}
+.color-green{color:#10b981}
+.color-red{color:#ef4444}
+.color-blue{color:#60a5fa}
+.color-yellow{color:#f1c40f}
+.color-purple{color:#a855f7}
+.color-orange{color:#f59e0b}
+.color-muted{color:#64748b}
+.slider-group{margin-bottom:14px}
+.slider-group label{display:flex;justify-content:space-between;font-size:14px;color:#cbd5e1;margin-bottom:4px}
+.slider-group label span{color:#f1c40f;font-weight:700}
+input[type=range]{width:100%;accent-color:#3b82f6;height:6px;border-radius:3px}
+.slider-lock{opacity:.5;pointer-events:none}
+.slider-value{font-weight:700;color:#f1c40f}
+input[type=number]{width:100%;padding:6px 10px;background:#0f172a;border:1px solid #334155;border-radius:6px;color:#e2e8f0;font-size:13px}
+table{width:100%;border-collapse:collapse}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid #334155;font-size:14px}
+th{color:#94a3b8;font-weight:600;text-transform:uppercase;font-size:12px;letter-spacing:.3px}
+td{color:#e2e8f0}
+.toggle-wrap{display:flex;align-items:center;gap:10px;margin:12px 0}
+.toggle{position:relative;width:44px;height:24px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.toggle .slider-toggle{position:absolute;top:0;left:0;right:0;bottom:0;background:#475569;border-radius:24px;cursor:pointer;transition:.3s}
+.toggle .slider-toggle::before{content:'';position:absolute;height:18px;width:18px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s}
+.toggle input:checked+.slider-toggle{background:#10b981}
+.toggle input:checked+.slider-toggle::before{transform:translateX(20px)}
+.toggle-label{font-size:14px;color:#cbd5e1;font-weight:600}
+.toggle-label.locked{color:#10b981}
+.toggle-sub{font-size:11px;color:#64748b;margin-top:2px}
+.chart-wrap{position:relative;height:320px}
+.step-num{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:#3b82f6;color:#fff;font-size:13px;font-weight:700;margin-right:8px}
+.step-title{font-size:16px;font-weight:700;color:#f1c40f}
+.consolidado-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.consol-item{display:flex;justify-content:space-between;padding:10px 14px;background:#0f172a;border-radius:8px;border-left:3px solid #3b82f6}
+.consol-item.total{border-left-color:#f1c40f;background:#1e3a5f;font-weight:700}
+.consol-label{color:#94a3b8;font-size:13px}
+.consol-value{color:#e2e8f0;font-weight:600;font-size:14px}
+.consol-item.total .consol-value{color:#f1c40f;font-size:16px}
+.resumo-aplicacao{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:16px 0}
+.resumo-card{background:#0f172a;border-radius:10px;padding:14px;text-align:center;border:1px solid #334155}
+.resumo-label{font-size:11px;color:#64748b}
+.resumo-value{font-size:20px;font-weight:700;margin-top:4px}
+.app-table{width:100%;border-collapse:collapse;margin-top:12px}
+.app-table th{background:#0f172a;padding:10px 12px;font-size:12px;text-transform:uppercase;color:#94a3b8;text-align:center}
+.app-table td{padding:10px 12px;text-align:center;border-bottom:1px solid #1e293b;font-size:13px}
+.app-table tr:last-child td{border-bottom:none}
+.app-table tr:hover td{background:#1e293b}
+.lucro-box{background:linear-gradient(135deg,#064e3b,#022c22);border:2px solid #10b981;border-radius:12px;padding:16px;margin-top:12px;text-align:center}
+.lucro-label{font-size:13px;color:#94a3b8}
+.lucro-value{font-size:28px;font-weight:800;color:#10b981;margin:4px 0}
+.lucro-sub{font-size:12px;color:#64748b}
+.radio-group{display:flex;gap:12px;flex-wrap:wrap;margin:6px 0 16px}
+.radio-group label{display:flex;align-items:center;gap:6px;font-size:13px;color:#cbd5e1;cursor:pointer;padding:8px 14px;border-radius:8px;border:1px solid #334155;background:#0f172a;transition:all .2s}
+.radio-group label:hover{border-color:#3b82f6}
+.radio-group input[type=radio]{accent-color:#3b82f6;width:15px;height:15px}
+.radio-group label.selected{border-color:#3b82f6;background:#1e3a5f;color:#60a5fa}
+.estim-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:8px 0}
+.estim-item{background:#0f172a;border-radius:8px;padding:10px;text-align:center;border:1px solid #334155}
+.estim-label{font-size:11px;color:#94a3b8}
+.estim-value{font-size:16px;font-weight:700;color:#f1c40f;margin-top:2px}
+.estim-total{background:#1a2332;border:1px solid #f59e0b}
+.estim-total .estim-value{color:#f59e0b;font-size:18px}
+.subtitle{font-size:12px;color:#64748b;margin-top:-8px;margin-bottom:14px;font-style:italic}
+@media print{
+.tabs,.tab-btn,.simulador-section,.btn-print{display:none!important}
+.tab-content{display:block!important}
+.container{max-width:100%;padding:10px}
+body{background:#fff;color:#000}
+.card{background:#f8fafc!important;border-color:#ddd!important}
+.stat-card{background:#f1f5f9!important}
+.stat-value{color:#000!important}
+.stat-card.disabled{opacity:1!important;background:#f1f5f9!important}
+.consol-item{background:#f1f5f9!important}
+.consol-item.total{background:#e2e8f0!important}
+.lucro-box{background:#f0fdf4!important;border-color:#10b981!important}
+.lucro-value{color:#059669!important}
+.consol-item .consol-value{color:#000!important}
+.consol-item.total .consol-value{color:#b45309!important}
+.radio-group label{border-color:#ccc!important;background:#f1f5f9!important}
+.radio-group label.selected{border-color:#3b82f6!important;background:#dbeafe!important}
+.estim-item{background:#f1f5f9!important;border-color:#ccc!important}
+.estim-value{color:#000!important}
+.estim-total{border-color:#f59e0b!important}
+}
 </style>
 </head>
 <body>
@@ -125,6 +137,8 @@
 
   <!-- ===== TAB 1: CRÉDITO ===== -->
   <div id="tab-credito" class="tab-content active">
+
+    <!-- SIMULADOR -->
     <div class="card simulador-section">
       <div class="card-title">⚙️ Parâmetros da Simulação</div>
 
@@ -139,17 +153,11 @@
         <input type="range" id="margemOp" min="5" max="40" step="0.5" value="15" oninput="calcular()">
         <div style="font-size:11px;color:#64748b;margin-top:2px">% do faturamento que é lucro operacional</div>
       </div>
-      <div style="margin-bottom:6px;font-size:13px;color:#94a3b8">Regime Tributário:</div>
+      <div style="margin-bottom:4px;font-size:13px;color:#94a3b8">Regime Tributário:</div>
       <div class="radio-group">
-        <label class="selected" onclick="setRegime('real')">
-          <input type="radio" name="regime" value="real" checked onchange="setRegime('real');calcular()"> 🏛️ Lucro Real
-        </label>
-        <label onclick="setRegime('presumido')">
-          <input type="radio" name="regime" value="presumido" onchange="setRegime('presumido');calcular()"> 📋 Lucro Presumido
-        </label>
-        <label onclick="setRegime('simples')">
-          <input type="radio" name="regime" value="simples" onchange="setRegime('simples');calcular()"> 🏪 Simples Nacional
-        </label>
+        <label class="selected"><input type="radio" name="regime" value="real" checked onchange="setRegime('real');calcular()"> 🏛️ Lucro Real</label>
+        <label><input type="radio" name="regime" value="presumido" onchange="setRegime('presumido');calcular()"> 📋 Lucro Presumido</label>
+        <label><input type="radio" name="regime" value="simples" onchange="setRegime('simples');calcular()"> 🏪 Simples Nacional</label>
       </div>
 
       <!-- PASSO 2 -->
@@ -190,20 +198,27 @@
       </div>
 
       <!-- PASSO 4 -->
-      <div style="margin-bottom:6px;margin-top:18px"><div class="step-num">4</div><span class="step-title">Custos do FIDC <span style="font-size:12px;color:#94a3b8;font-weight:400">(inclusos na taxa)</span></span></div>
-      <div class="subtitle">Estes custos são cobertos pela taxa de desconto — não são cobrados separadamente</div>
-      <div class="grid-4" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr))">
-        <div><label style="font-size:12px;color:#94a3b8">Administração</label><input type="number" id="custoAdm" value="15000" onchange="calcular()"></div>
-        <div><label style="font-size:12px;color:#94a3b8">Custódia</label><input type="number" id="custoCustodia" value="1000" onchange="calcular()"></div>
-        <div><label style="font-size:12px;color:#94a3b8">Gestão</label><input type="number" id="custoGestao" value="20000" onchange="calcular()"></div>
-        <div><label style="font-size:12px;color:#94a3b8">Auditoria (anual ÷12)</label><input type="number" id="custoAuditoria" value="1000" onchange="calcular()"></div>
+      <div style="margin-bottom:8px;margin-top:18px"><div class="step-num">4</div><span class="step-title">Estimativa de Custos do FIDC</span></div>
+      <div class="subtitle">Custos operacionais estimados — já inclusos na taxa de desconto, não cobrados separadamente</div>
+      <div class="estim-grid">
+        <div class="estim-item"><div class="estim-label">Administração</div><div class="estim-value">R$ 15.000</div></div>
+        <div class="estim-item"><div class="estim-label">Custódia</div><div class="estim-value">R$ 1.000</div></div>
+        <div class="estim-item"><div class="estim-label">Gestão</div><div class="estim-value">R$ 20.000</div></div>
+        <div class="estim-item"><div class="estim-label">Auditoria (anual ÷12)</div><div class="estim-value">R$ 1.000</div></div>
+        <div class="estim-item estim-total"><div class="estim-label">💰 Total Custos Fixos</div><div class="estim-value" id="totalCustosEstim">R$ 37.000</div></div>
+      </div>
+      <div style="display:none">
+        <input type="number" id="custoAdm" value="15000">
+        <input type="number" id="custoCustodia" value="1000">
+        <input type="number" id="custoGestao" value="20000">
+        <input type="number" id="custoAuditoria" value="1000">
       </div>
 
       <!-- PASSO 5 -->
-      <div style="margin-bottom:10px;margin-top:18px"><div class="step-num">5</div><span class="step-title">Lucro Líquido da Operação</span></div>
+      <div style="margin-bottom:10px;margin-top:18px"><div class="step-num">5</div><span class="step-title">Economia Gerada</span></div>
       <div class="lucro-box">
         <div class="lucro-label">💰 Economia Gerada pela Troca CG → FIDC</div>
-        <div class="lucro-value" id="lucroLiquido">R$ 39.500</div>
+        <div class="lucro-value" id="economiaGerada">R$ 39.500</div>
         <div class="lucro-sub">Redução mensal no custo do capital de giro</div>
       </div>
       <button onclick="calcular()" style="margin-top:14px;width:100%;padding:12px;background:#3b82f6;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer">🔄 Atualizar Simulação</button>
@@ -240,7 +255,6 @@
           <tbody>
             <tr><td style="font-weight:600">Custo do Capital de Giro</td><td id="custoAntesValor">R$ 94.500</td><td id="custoDepoisValor">R$ 55.000</td><td id="variacaoValor" class="color-green">−R$ 39.500 (−41,8%)</td></tr>
             <tr><td>Prazo Médio</td><td id="prazoAntes">55 dias</td><td id="prazoDepois">28 dias</td><td class="color-green">−27 dias (−49,1%)</td></tr>
-            <tr><td>Custos Adm/Fiscais</td><td>R$ 12.000</td><td>R$ 12.000</td><td>—</td></tr>
             <tr><td>IOF</td><td>0,38%</td><td>—</td><td class="color-green">Eliminado</td></tr>
           </tbody>
         </table>
@@ -379,11 +393,13 @@ function calcular() {
   const iof = 0.38;
   const margem = parseFloat(document.getElementById('margemOp').value) || 15;
 
-  const cAdm = parseFloat(document.getElementById('custoAdm').value) || 0;
-  const cCust = parseFloat(document.getElementById('custoCustodia').value) || 0;
-  const cGest = parseFloat(document.getElementById('custoGestao').value) || 0;
-  const cAud = parseFloat(document.getElementById('custoAuditoria').value) || 0;
+  const cAdm = 15000;
+  const cCust = 1000;
+  const cGest = 20000;
+  const cAud = 1000;
   const fixos = cAdm + cCust + cGest + cAud;
+
+  document.getElementById('totalCustosEstim').textContent = fmt(fixos);
 
   const gap = prazoRec - prazoFidc;
   const custoCg = fat * (gap / 30) * ((cg + iof) / 100);
@@ -414,7 +430,6 @@ function calcular() {
   document.getElementById('economiaAnual').textContent = fmt(eco * 12);
   document.getElementById('impactoTotal').textContent = fmt(impTotal);
 
-  // Benefício Fiscal
   const elBF = document.getElementById('beneficioFiscal');
   const elBFSub = document.getElementById('bfSub');
   const elBFCard = document.getElementById('bfCard');
@@ -441,7 +456,6 @@ function calcular() {
   document.getElementById('prazoAntes').textContent = prazoRec + ' dias';
   document.getElementById('prazoDepois').textContent = prazoFidc + ' dias';
 
-  // Consolidado
   document.getElementById('consolEconomia').textContent = fmt(eco * 12);
   const elConsolFiscal = document.getElementById('consolFiscal');
   const elConsolFiscalItem = document.getElementById('consolFiscalItem');
@@ -453,17 +467,14 @@ function calcular() {
   }
   document.getElementById('consolTotal').textContent = fmt(impTotal * 12);
 
-  // Lucro Líquido (Passo 5) = apenas a economia
-  document.getElementById('lucroLiquido').textContent = fmt(eco);
+  document.getElementById('economiaGerada').textContent = fmt(eco);
 
-  // Atualiza valor da aplicação
   const ecoAnual = Math.round(eco * 12);
   document.getElementById('valorAplicar').value = ecoAnual;
   document.getElementById('valorAplicarLabel').textContent = 'R$ ' + ecoAnual.toLocaleString('pt-BR');
 
   if (document.getElementById('tab-aplicacao').classList.contains('active')) calcularAplicacao();
 
-  // Gráfico
   if (chartCredito) chartCredito.destroy();
   const ctx = document.getElementById('chartCredito').getContext('2d');
   chartCredito = new Chart(ctx, {
@@ -482,8 +493,7 @@ function calcular() {
         tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': R$ ' + ctx.parsed.y.toLocaleString('pt-BR') } },
         datalabels: {
           anchor: 'end', align: 'end', color: '#e2e8f0', font: { weight: 'bold', size: 13 },
-          formatter: v => 'R$ ' + Math.round(v).toLocaleString('pt-BR'),
-          offset: 2
+          formatter: v => 'R$ ' + Math.round(v).toLocaleString('pt-BR'), offset: 2
         }
       },
       scales: {
@@ -563,8 +573,7 @@ function calcularAplicacao() {
         tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': R$ ' + ctx.parsed.y.toLocaleString('pt-BR') } },
         datalabels: {
           anchor: 'end', align: 'end', color: '#e2e8f0', font: { weight: 'bold', size: 12 },
-          formatter: v => 'R$ ' + Math.round(v).toLocaleString('pt-BR'),
-          offset: 2
+          formatter: v => 'R$ ' + Math.round(v).toLocaleString('pt-BR'), offset: 2
         }
       },
       scales: {
