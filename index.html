@@ -10,30 +10,10 @@
 </script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',system-ui,-apple-system,sans-serif}
-body{background:#0f172a;color:#e2e8f0;min-height:100vh}
-.container{max-width:1200px;margin:0 auto;padding:20px}
-.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px}
-.logo{font-size:26px;font-weight:800;color:#f1c40f;display:flex;align-items:center;gap:8px}
-.logo span{font-size:28px}
-.header-actions{display:flex;gap:10px;flex-wrap:wrap}
-.btn-print{padding:8px 18px;border-radius:8px;border:1px solid #334155;background:#1e293b;color:#e2e8f0;cursor:pointer;font-size:14px;display:flex;align-items:center;gap:6px}
-.btn-print:hover{background:#334155}
-
-/* === CONSOLIDADO TOPO === */
-.hero-consolidado{background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 50%,#0f172a 100%);border:2px solid #f1c40f;border-radius:16px;padding:24px;margin-bottom:24px;position:relative;overflow:hidden}
-.hero-consolidado::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(241,196,15,0.03) 0%,transparent 70%);pointer-events:none}
-.hero-title{font-size:13px;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
-.hero-title span{font-size:18px}
-.hero-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
-.hero-item{background:rgba(30,41,59,0.6);border-radius:12px;padding:14px 16px;text-align:center;border:1px solid rgba(241,196,15,0.15);transition:all .3s}
-.hero-item:hover{border-color:#f1c40f;transform:translateY(-2px)}
-.hero-item.highlight{background:linear-gradient(135deg,rgba(241,196,15,0.12),rgba(241,196,15,0.04));border-color:#f1c40f;}
-.hero-item-label{font-size:11px;color:#94a3b8;margin-bottom:4px;white-space:nowrap}
-.hero-item-value{font-size:24px;font-weight:800}
-.hero-item-sub{font-size:10px;color:#64748b;margin-top:2px}
-.hero-divider{width:1px;background:#334155;margin:0 4px}
-@media(max-width:768px){.hero-grid{grid-template-columns:repeat(2,1fr)}.hero-item-value{font-size:20px}}
-@media(max-width:480px){.hero-grid{grid-template-columns:1fr 1fr}.hero-item{padding:10px 12px}}
+body{background:#0f172a;color:#e2e8f0;min-height:100vh;padding:20px}
+.container{max-width:920px;margin:0 auto}
+.logo{font-size:22px;font-weight:800;color:#f1c40f;display:flex;align-items:center;gap:8px;margin-bottom:20px}
+.logo span{font-size:24px}
 
 .tabs{display:flex;gap:4px;background:#1e293b;border-radius:12px;padding:4px;margin-bottom:24px}
 .tab-btn{flex:1;padding:12px 20px;border:none;background:transparent;color:#94a3b8;font-size:15px;font-weight:600;cursor:pointer;border-radius:8px;transition:all .2s;text-align:center}
@@ -41,623 +21,362 @@ body{background:#0f172a;color:#e2e8f0;min-height:100vh}
 .tab-btn.active{background:#3b82f6;color:#fff;box-shadow:0 4px 12px rgba(59,130,246,.3)}
 .tab-content{display:none}
 .tab-content.active{display:block}
-.card{background:#1e293b;border-radius:14px;padding:20px;margin-bottom:18px;border:1px solid #334155}
-.card-title{font-size:14px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.grid-4{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:20px}
-.stat-card{background:linear-gradient(135deg,#1e293b,#1a2332);border-radius:12px;padding:18px;border:1px solid #334155;text-align:center}
-.stat-card.highlight-blue{background:linear-gradient(135deg,#1e3a5f,#0f2744);border-color:#3b82f6}
-.stat-card.highlight-green{background:linear-gradient(135deg,#064e3b,#022c22);border-color:#10b981}
-.stat-card.highlight-orange{background:linear-gradient(135deg,#5c3a0e,#3d2608);border-color:#f59e0b}
-.stat-card.highlight-purple{background:linear-gradient(135deg,#3b0764,#240442);border-color:#a855f7}
-.stat-card.disabled{background:#1e293b;border-color:#475569;opacity:.6}
-.stat-label{font-size:12px;color:#94a3b8;margin-bottom:4px}
-.stat-value{font-size:22px;font-weight:800}
-.stat-sub{font-size:11px;color:#64748b;margin-top:4px}
-.color-green{color:#10b981}
-.color-red{color:#ef4444}
-.color-blue{color:#60a5fa}
-.color-yellow{color:#f1c40f}
-.color-purple{color:#a855f7}
-.color-orange{color:#f59e0b}
-.color-muted{color:#64748b}
-.slider-group{margin-bottom:14px}
-.slider-group label{display:flex;justify-content:space-between;font-size:14px;color:#cbd5e1;margin-bottom:4px}
-.slider-group label span{color:#f1c40f;font-weight:700}
-input[type=range]{width:100%;accent-color:#3b82f6;height:6px;border-radius:3px}
-.slider-lock{opacity:.5;pointer-events:none}
-.slider-value{font-weight:700;color:#f1c40f}
-input[type=number]{width:100%;padding:6px 10px;background:#0f172a;border:1px solid #334155;border-radius:6px;color:#e2e8f0;font-size:13px}
-table{width:100%;border-collapse:collapse}
-th,td{padding:10px 12px;text-align:left;border-bottom:1px solid #334155;font-size:14px}
-th{color:#94a3b8;font-weight:600;text-transform:uppercase;font-size:12px;letter-spacing:.3px}
-td{color:#e2e8f0}
-.toggle-wrap{display:flex;align-items:center;gap:10px;margin:12px 0}
-.toggle{position:relative;width:44px;height:24px;flex-shrink:0}
-.toggle input{opacity:0;width:0;height:0}
-.toggle .slider-toggle{position:absolute;top:0;left:0;right:0;bottom:0;background:#475569;border-radius:24px;cursor:pointer;transition:.3s}
-.toggle .slider-toggle::before{content:'';position:absolute;height:18px;width:18px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s}
-.toggle input:checked+.slider-toggle{background:#10b981}
-.toggle input:checked+.slider-toggle::before{transform:translateX(20px)}
-.toggle-label{font-size:14px;color:#cbd5e1;font-weight:600}
-.toggle-label.locked{color:#10b981}
-.toggle-sub{font-size:11px;color:#64748b;margin-top:2px}
-.chart-wrap{position:relative;height:320px}
-.step-num{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:#3b82f6;color:#fff;font-size:13px;font-weight:700;margin-right:8px}
-.step-title{font-size:16px;font-weight:700;color:#f1c40f}
-.consolidado-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
-.consol-item{display:flex;justify-content:space-between;padding:10px 14px;background:#0f172a;border-radius:8px;border-left:3px solid #3b82f6}
-.consol-item.total{border-left-color:#f1c40f;background:#1e3a5f;font-weight:700}
-.consol-label{color:#94a3b8;font-size:13px}
-.consol-value{color:#e2e8f0;font-weight:600;font-size:14px}
-.consol-item.total .consol-value{color:#f1c40f;font-size:16px}
-.resumo-aplicacao{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:16px 0}
-.resumo-card{background:#0f172a;border-radius:10px;padding:14px;text-align:center;border:1px solid #334155}
-.resumo-label{font-size:11px;color:#64748b}
-.resumo-value{font-size:20px;font-weight:700;margin-top:4px}
+
+.card{background:#1e293b;border-radius:16px;padding:28px;border:1px solid #334155;margin-bottom:20px}
+.card-title{font-size:13px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:16px}
+@media(max-width:640px){.grid-2{grid-template-columns:1fr}}
+@media(max-width:480px){.grid-cards{grid-template-columns:1fr}.grid-2{grid-template-columns:1fr}}
+
+.input-group{margin-bottom:16px}
+.input-group label{display:flex;justify-content:space-between;font-size:14px;color:#cbd5e1;margin-bottom:4px}
+.input-group label span{color:#f1c40f;font-weight:700}
+.input-group input[type=range]{width:100%;accent-color:#3b82f6;height:6px;border-radius:3px}
+.input-group .dica{font-size:11px;color:#64748b;margin-top:2px}
+
+.iof-fixo{display:flex;align-items:center;justify-content:space-between;background:#0f172a;border-radius:8px;padding:10px 14px;border:1px solid #334155;margin-bottom:16px}
+.iof-fixo .label{font-size:13px;color:#94a3b8}
+.iof-fixo .valor{font-size:15px;font-weight:700;color:#f59e0b}
+
+.resultao{background:linear-gradient(135deg,#064e3b,#022c22);border:2px solid #10b981;border-radius:12px;padding:20px;text-align:center;margin-bottom:16px}
+.resultao .r-label{font-size:13px;color:#94a3b8;margin-bottom:2px}
+.resultao .r-valor{font-size:32px;font-weight:800;color:#10b981}
+.resultao .r-sub{font-size:12px;color:#64748b;margin-top:2px}
+
+.grid-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.card-info{background:#0f172a;border-radius:10px;padding:14px;text-align:center;border:1px solid #334155}
+.card-info .c-label{font-size:11px;color:#94a3b8}
+.card-info .c-valor{font-size:18px;font-weight:700;margin-top:2px}
+
+.comp-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.comp-item{background:#0f172a;border-radius:10px;padding:14px;text-align:center;border:1px solid #334155}
+.comp-item .cp-label{font-size:11px;color:#94a3b8}
+.comp-item .cp-valor{font-size:20px;font-weight:700;margin-top:2px}
+.comp-item.destaque{border-color:#10b981;background:linear-gradient(135deg,#064e3b,#022c22)}
+.comp-item.destaque .cp-valor{color:#10b981}
+
+.chart-wrap{position:relative;height:260px;margin-top:12px}
+.chart-sub{text-align:center;font-size:11px;color:#64748b;margin-top:4px}
+
+.info-box{background:#1e3a5f;border:1px solid #3b82f6;border-radius:8px;padding:12px 14px;margin:14px 0;font-size:13px;color:#93c5fd;display:flex;align-items:flex-start;gap:8px;line-height:1.4}
+.info-box .icon{font-size:16px;flex-shrink:0;margin-top:1px}
+
+.ir-box{background:#3d2608;border:1px solid #f59e0b;border-radius:8px;padding:12px 14px;margin:14px 0;font-size:13px;color:#fcd34d;display:flex;align-items:flex-start;gap:8px;line-height:1.4}
+.ir-box .icon{font-size:16px;flex-shrink:0;margin-top:1px}
+
 .app-table{width:100%;border-collapse:collapse;margin-top:12px}
-.app-table th{background:#0f172a;padding:10px 12px;font-size:12px;text-transform:uppercase;color:#94a3b8;text-align:center}
+.app-table th{padding:10px 12px;font-size:12px;text-transform:uppercase;color:#94a3b8;text-align:center;background:#0f172a;border-bottom:1px solid #334155}
 .app-table td{padding:10px 12px;text-align:center;border-bottom:1px solid #1e293b;font-size:13px}
 .app-table tr:last-child td{border-bottom:none}
 .app-table tr:hover td{background:#1e293b}
-.lucro-box{background:linear-gradient(135deg,#064e3b,#022c22);border:2px solid #10b981;border-radius:12px;padding:16px;margin-top:12px;text-align:center}
-.lucro-label{font-size:13px;color:#94a3b8}
-.lucro-value{font-size:28px;font-weight:800;color:#10b981;margin:4px 0}
-.lucro-sub{font-size:12px;color:#64748b}
-.radio-group{display:flex;gap:12px;flex-wrap:wrap;margin:6px 0 16px}
-.radio-group label{display:flex;align-items:center;gap:6px;font-size:13px;color:#cbd5e1;cursor:pointer;padding:8px 14px;border-radius:8px;border:1px solid #334155;background:#0f172a;transition:all .2s}
-.radio-group label:hover{border-color:#3b82f6}
-.radio-group input[type=radio]{accent-color:#3b82f6;width:15px;height:15px}
-.radio-group label.selected{border-color:#3b82f6;background:#1e3a5f;color:#60a5fa}
-.estim-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:8px 0}
-.estim-item{background:#0f172a;border-radius:8px;padding:10px;text-align:center;border:1px solid #334155}
-.estim-label{font-size:11px;color:#94a3b8}
-.estim-value{font-size:16px;font-weight:700;color:#f1c40f;margin-top:2px}
-.estim-total{background:#1a2332;border:1px solid #f59e0b}
-.estim-total .estim-value{color:#f59e0b;font-size:18px}
-.subtitle{font-size:12px;color:#64748b;margin-top:-8px;margin-bottom:14px;font-style:italic}
-.info-box{background:#1e3a5f;border:1px solid #3b82f6;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:12px;color:#93c5fd;display:flex;align-items:flex-start;gap:8px}
-.info-box .icon{font-size:16px;flex-shrink:0;margin-top:1px}
-.ir-box{background:#3d2608;border:1px solid #f59e0b;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:12px;color:#fcd34d;display:flex;align-items:flex-start;gap:8px}
-.ir-box .icon{font-size:16px;flex-shrink:0;margin-top:1px}
+
 @media print{
-.tabs,.tab-btn,.simulador-section,.btn-print{display:none!important}
-.tab-content{display:block!important}
-.container{max-width:100%;padding:10px}
-body{background:#fff;color:#000}
+body{background:#fff;padding:10px}
 .card{background:#f8fafc!important;border-color:#ddd!important}
-.hero-consolidado{background:#fefce8!important;border-color:#f1c40f!important}.hero-item{background:#f1f5f9!important}.hero-item-value{color:#000!important}.hero-item.highlight{background:#fef3c7!important}
-.stat-card{background:#f1f5f9!important}
-.stat-value{color:#000!important}
-.stat-card.disabled{opacity:1!important;background:#f1f5f9!important}
-.consol-item{background:#f1f5f9!important}
-.consol-item.total{background:#e2e8f0!important}
-.lucro-box{background:#f0fdf4!important;border-color:#10b981!important}
-.lucro-value{color:#059669!important}
-.consol-item .consol-value{color:#000!important}
-.consol-item.total .consol-value{color:#b45309!important}
-.radio-group label{border-color:#ccc!important;background:#f1f5f9!important}
-.radio-group label.selected{border-color:#3b82f6!important;background:#dbeafe!important}
-.estim-item{background:#f1f5f9!important;border-color:#ccc!important}
-.estim-value{color:#000!important}
-.estim-total{border-color:#f59e0b!important}
+.logo{color:#000!important}
+.iof-fixo{background:#f1f5f9!important;border-color:#ccc!important}
+.resultao{background:#f0fdf4!important;border-color:#10b981!important}
+.resultao .r-valor{color:#059669!important}
+.card-info{background:#f1f5f9!important}
+.comp-item{background:#f1f5f9!important}
+.comp-item.destaque{background:#f0fdf4!important;border-color:#10b981!important}
 .info-box{background:#eff6ff!important;border-color:#3b82f6!important;color:#1e40af!important}
 .ir-box{background:#fffbeb!important;border-color:#f59e0b!important;color:#92400e!important}
+.tabs,.tab-btn{display:none!important}
+.tab-content{display:block!important}
 }
 </style>
 </head>
 <body>
 <div class="container">
-  <div class="header">
-    <div class="logo"><span>🦭</span> FocaInvest</div>
-    <div class="header-actions">
-      <button class="btn-print" onclick="window.print()">🖨️ Imprimir / PDF</button>
-    </div>
-  </div>
+  <div class="logo"><span>🦭</span> FocaInvest</div>
 
-  <!-- ===== HERO CONSOLIDADO ===== -->
-  <div class="hero-consolidado" id="heroConsolidado">
-    <div class="hero-title"><span>🎯</span> Resultado Consolidado — Impacto Total</div>
-    <div class="hero-grid">
-      <div class="hero-item">
-        <div class="hero-item-label">📋 Economia Anual (Crédito)</div>
-        <div class="hero-item-value color-green" id="heroEconomia">R$ 474.000</div>
-        <div class="hero-item-sub">Troca CG → FIDC</div>
-      </div>
-      <div class="hero-item" id="heroBFItem">
-        <div class="hero-item-label">🏛️ Benefício Fiscal (IRPJ+CSLL)</div>
-        <div class="hero-item-value color-orange" id="heroBF">R$ 161.160</div>
-        <div class="hero-item-sub" id="heroBFSub">34% — Lucro Real</div>
-      </div>
-      <div class="hero-item">
-        <div class="hero-item-label">📈 Ganho Líquido (Aplicação)</div>
-        <div class="hero-item-value color-purple" id="heroAplicacao">R$ 60.435</div>
-        <div class="hero-item-sub">Economia reinvestida</div>
-      </div>
-      <div class="hero-item highlight">
-        <div class="hero-item-label">💰 Impacto Total Ano</div>
-        <div class="hero-item-value color-yellow" id="heroTotal">R$ 695.595</div>
-        <div class="hero-item-sub">Crédito + Fiscal + Aplicação</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== TABS ===== -->
   <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('credito')">📋 Simulação de Crédito</button>
-    <button class="tab-btn" onclick="switchTab('aplicacao')">📈 Simulação de Aplicação</button>
+    <button class="tab-btn active" onclick="switchTab('credito')">📋 Crédito</button>
+    <button class="tab-btn" onclick="switchTab('aplicacao')">📈 Aplicação</button>
   </div>
 
   <!-- ===== TAB 1: CRÉDITO ===== -->
   <div id="tab-credito" class="tab-content active">
-    <div class="card simulador-section">
-      <div class="card-title">⚙️ Parâmetros da Simulação</div>
-      <div style="margin-bottom:12px"><div class="step-num">1</div><span class="step-title">Dados da Empresa</span></div>
-      <div class="slider-group">
-        <label>Faturamento Mensal <span id="fatLabel">R$ 3.000.000</span></label>
-        <input type="range" id="faturamento" min="500000" max="20000000" step="100000" value="3000000" oninput="formatarLabel('faturamento','fatLabel');calcular()">
-      </div>
-      <div class="slider-group">
-        <label>Margem Operacional <span id="margemLabel">15%</span></label>
-        <input type="range" id="margemOp" min="5" max="40" step="0.5" value="15" oninput="calcular()">
-        <div style="font-size:11px;color:#64748b;margin-top:2px">% do faturamento que é lucro operacional</div>
-      </div>
-      <div style="margin-bottom:4px;font-size:13px;color:#94a3b8">Regime Tributário:</div>
-      <div class="radio-group">
-        <label class="selected"><input type="radio" name="regime" value="real" checked onchange="setRegime('real')"> 🏛️ Lucro Real</label>
-        <label><input type="radio" name="regime" value="presumido" onchange="setRegime('presumido')"> 📋 Lucro Presumido</label>
-        <label><input type="radio" name="regime" value="simples" onchange="setRegime('simples')"> 🏪 Simples Nacional</label>
-      </div>
-      <div style="margin-bottom:12px;margin-top:18px"><div class="step-num">2</div><span class="step-title">Capital de Giro — Conta Garantida</span></div>
-      <div class="slider-group">
-        <label>Taxa do Capital de Giro <span id="taxaCgLabel">3,50%</span></label>
-        <input type="range" id="taxaCg" min="1" max="8" step="0.1" value="3.5" oninput="calcular()">
-      </div>
-      <div class="slider-group">
-        <label>Prazo Médio dos Recebíveis <span id="prazoRecLabel">55</span> dias</label>
-        <input type="range" id="prazoRec" min="15" max="120" value="55" oninput="calcular()">
-      </div>
-      <div class="slider-group">
-        <label>IOF <span class="slider-value">0,38%</span></label>
-        <div style="height:6px;background:#334155;border-radius:3px;position:relative"><div style="width:100%;height:100%;background:#f59e0b;border-radius:3px"></div></div>
-        <div style="font-size:11px;color:#64748b;margin-top:2px">🔒 IOF congelado em 0,38% (fixo)</div>
-      </div>
-      <div style="margin-bottom:12px;margin-top:18px"><div class="step-num">3</div><span class="step-title">Capital de Giro — FIDC</span></div>
-      <div class="toggle-wrap">
-        <label class="toggle">
-          <input type="checkbox" id="toggleOtimizar" onchange="toggleOtimizacao()">
-          <span class="slider-toggle"></span>
-        </label>
-        <div>
-          <div class="toggle-label" id="toggleLabel">⚡ Otimizar taxa FIDC automaticamente</div>
-          <div class="toggle-sub">Garante no mínimo <strong>1% de economia</strong> sobre a margem operacional</div>
-        </div>
-      </div>
-      <div class="slider-group">
-        <label>Taxa de Desconto do FIDC <span id="taxaFidcLabel">1,80%</span></label>
-        <input type="range" id="taxaFidc" min="0.5" max="4" step="0.01" value="1.8" oninput="calcular()">
-      </div>
-      <div class="slider-group">
-        <label>Prazo Médio do Portfolio <span id="prazoFidcLabel">28</span> dias</label>
-        <input type="range" id="prazoFidc" min="5" max="60" value="28" oninput="calcular()">
-        <div style="font-size:11px;color:#64748b;margin-top:2px">Prazo médio dos títulos cedidos ao FIDC (uso interno)</div>
-      </div>
-      <div style="margin-bottom:8px;margin-top:18px"><div class="step-num">4</div><span class="step-title">Estimativa de Custos do FIDC</span></div>
-      <div class="subtitle">Custos operacionais estimados — já inclusos na taxa de desconto, não cobrados separadamente</div>
-      <div class="estim-grid">
-        <div class="estim-item"><div class="estim-label">Administração</div><div class="estim-value">R$ 15.000</div></div>
-        <div class="estim-item"><div class="estim-label">Custódia</div><div class="estim-value">R$ 1.000</div></div>
-        <div class="estim-item"><div class="estim-label">Gestão</div><div class="estim-value">R$ 20.000</div></div>
-        <div class="estim-item"><div class="estim-label">Auditoria (anual ÷12)</div><div class="estim-value">R$ 1.000</div></div>
-        <div class="estim-item estim-total"><div class="estim-label">💰 Total Custos Fixos</div><div class="estim-value" id="totalCustosEstim">R$ 37.000</div></div>
-      </div>
-      <div style="display:none">
-        <input type="number" id="custoAdm" value="15000">
-        <input type="number" id="custoCustodia" value="1000">
-        <input type="number" id="custoGestao" value="20000">
-        <input type="number" id="custoAuditoria" value="1000">
-      </div>
-      <div style="margin-bottom:10px;margin-top:18px"><div class="step-num">5</div><span class="step-title">Economia Gerada</span></div>
-      <div class="lucro-box">
-        <div class="lucro-label">💰 Economia Gerada pela Troca CG → FIDC</div>
-        <div class="lucro-value" id="economiaGerada">R$ 39.500</div>
-        <div class="lucro-sub">Redução mensal no custo do capital de giro</div>
-      </div>
-      <button onclick="calcular()" style="margin-top:14px;width:100%;padding:12px;background:#3b82f6;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer">🔄 Atualizar Simulação</button>
-    </div>
-    <div class="card" style="border-color:#3b82f6">
-      <div class="card-title">📊 Dashboard — Comparativo de Crédito</div>
-      <div class="grid-4">
-        <div class="stat-card highlight-blue">
-          <div class="stat-label">📉 Economia no Custo do Capital de Giro</div>
-          <div class="stat-value color-green" id="economiaMensal">R$ 39.500</div>
-          <div class="stat-sub">Redução mensal direta</div>
-        </div>
-        <div class="stat-card highlight-green">
-          <div class="stat-label">📈 Economia Projetada (12 meses)</div>
-          <div class="stat-value color-yellow" id="economiaAnual">R$ 474.000</div>
-          <div class="stat-sub">× 12 meses sem reinvestimento</div>
-        </div>
-        <div class="stat-card highlight-orange" id="bfCard">
-          <div class="stat-label">🏛️ Benefício Fiscal (IRPJ+CSLL)</div>
-          <div class="stat-value color-orange" id="beneficioFiscal">R$ 13.430</div>
-          <div class="stat-sub" id="bfSub">~34% sobre a economia mensal — Lucro Real</div>
-        </div>
-        <div class="stat-card highlight-purple">
-          <div class="stat-label">🎯 Impacto Total Mensal</div>
-          <div class="stat-value color-purple" id="impactoTotal">R$ 52.930</div>
-          <div class="stat-sub" id="impactoSub">Economia + Benefício Fiscal</div>
-        </div>
-      </div>
-      <div style="overflow-x:auto;margin-bottom:16px">
-        <table>
-          <thead><tr><th>Indicador</th><th>Antes (Conta Garantida)</th><th>Depois (FIDC)</th><th>Variação</th></tr></thead>
-          <tbody>
-            <tr><td style="font-weight:600">Custo do Capital de Giro</td><td id="custoAntesValor">R$ 94.500</td><td id="custoDepoisValor">R$ 55.000</td><td id="variacaoValor" class="color-green">−R$ 39.500 (−41,8%)</td></tr>
-            <tr><td>Prazo para Receber</td><td id="prazoAntes">55 dias</td><td id="prazoDepois">2 dias ⚡</td><td class="color-green" id="prazoVariacao">−53 dias (−96,4%)</td></tr>
-            <tr><td>IOF</td><td>0,38%</td><td>—</td><td class="color-green">Eliminado</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="chart-wrap"><canvas id="chartCredito"></canvas></div>
-      <div style="text-align:center;font-size:11px;color:#64748b;margin-top:6px">Comparativo do Custo do Capital de Giro — Antes vs Depois</div>
-    </div>
     <div class="card">
-      <div class="card-title">🎯 Cenário Consolidado — Impacto Anual</div>
-      <div class="consolidado-grid">
-        <div class="consol-item"><span class="consol-label">💰 Economia Anual Direta</span><span class="consol-value color-green" id="consolEconomia">R$ 474.000</span></div>
-        <div class="consol-item" id="consolFiscalItem"><span class="consol-label">🏛️ Benefício Fiscal Anual (34%)</span><span class="consol-value color-orange" id="consolFiscal">R$ 161.160</span></div>
-        <div class="consol-item total"><span class="consol-label">🎯 Impacto Total Anual</span><span class="consol-value" id="consolTotal">R$ 635.160</span></div>
+      <div class="card-title">⚙️ Parâmetros</div>
+      <div class="grid-2">
+        <div>
+          <div class="input-group">
+            <label>📋 Valor a Receber <span id="valorLabel">R$ 500.000</span></label>
+            <input type="range" id="valorReceber" min="50000" max="5000000" step="10000" value="500000" oninput="atualizarCredito()">
+          </div>
+          <div class="input-group">
+            <label>📅 Prazo Médio de Recebimento <span id="prazoLabel">45</span> dias</label>
+            <input type="range" id="prazoMedio" min="15" max="120" value="45" oninput="atualizarCredito()">
+            <div class="dica">Tempo médio que seus clientes levam para pagar</div>
+          </div>
+        </div>
+        <div>
+          <div class="input-group">
+            <label>🏦 Taxa Conta Garantida <span id="taxaCgLabel">3,5%</span></label>
+            <input type="range" id="taxaCg" min="1" max="8" step="0.1" value="3.5" oninput="atualizarCredito()">
+            <div class="dica">Taxa que o banco cobra hoje</div>
+          </div>
+          <div class="input-group">
+            <label>📊 Taxa do FIDC <span id="taxaFidcLabel">2,0%</span></label>
+            <input type="range" id="taxaFidc" min="2" max="5" step="0.1" value="2" oninput="atualizarCredito()">
+            <div class="dica">Arraste para simular diferentes cenários</div>
+          </div>
+        </div>
       </div>
+      <div class="iof-fixo">
+        <span class="label">🔒 IOF (fixo)</span>
+        <span class="valor">0,38%</span>
+      </div>
+
+      <div class="resultao">
+        <div class="r-label">💰 Economia Mensal</div>
+        <div class="r-valor" id="ecoMensal">R$ 21.750</div>
+        <div class="r-sub">Antecipando pelo FIDC em vez da Conta Garantida</div>
+      </div>
+
+      <div class="grid-cards">
+        <div class="card-info">
+          <div class="c-label">📈 Economia Projetada (12 meses)</div>
+          <div class="c-valor color-yellow" id="ecoAnual">R$ 261.000</div>
+        </div>
+        <div class="card-info">
+          <div class="c-label">🏛️ Benefício Fiscal (IRPJ+CSLL — 34%)</div>
+          <div class="c-valor color-orange" id="bfCard">R$ 88.740</div>
+          <div style="font-size:10px;color:#64748b">Apenas Lucro Real</div>
+        </div>
+      </div>
+
+      <div style="font-size:13px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">⚖️ Comparativo</div>
+      <div class="comp-grid">
+        <div class="comp-item">
+          <div class="cp-label">Custo Conta Garantida</div>
+          <div class="cp-valor color-red" id="custoCG">R$ 29.250</div>
+          <div style="font-size:10px;color:#64748b">com IOF</div>
+        </div>
+        <div class="comp-item destaque">
+          <div class="cp-label">Custo FIDC</div>
+          <div class="cp-valor" id="custoFIDC">R$ 7.500</div>
+          <div style="font-size:10px;color:#94a3b8">sem IOF</div>
+        </div>
+      </div>
+
+      <div class="chart-wrap"><canvas id="chartCredito"></canvas></div>
+      <div class="chart-sub">Comparativo do Custo — Conta Garantida vs FIDC</div>
     </div>
   </div>
 
   <!-- ===== TAB 2: APLICAÇÃO ===== -->
   <div id="tab-aplicacao" class="tab-content">
     <div class="card">
-      <div class="card-title">📈 Simulação de Aplicação — Economia em FIDC</div>
-      <p style="font-size:14px;color:#94a3b8;margin-bottom:14px">Esta simulação mostra o <strong>ganho adicional</strong> se a empresa <strong>aplicar a economia gerada</strong> pelo FIDC em outro fundo de crédito.</p>
-      <div class="slider-group">
-        <label>Valor a Aplicar (Economia Anual) <span id="valorAplicarLabel">R$ 474.000</span></label>
-        <input type="range" id="valorAplicar" min="50000" max="5000000" step="10000" value="474000" oninput="formatarLabel('valorAplicar','valorAplicarLabel');calcularAplicacao()">
+      <div class="card-title">📈 Aplicação da Economia</div>
+      <p style="font-size:14px;color:#94a3b8;margin-bottom:16px">Veja quanto sua economia mensal pode render se aplicada — e como o IRRF de 15% é <strong>compensável</strong> no IRPJ.</p>
+
+      <div class="grid-2">
+        <div>
+          <div class="input-group">
+            <label>💰 Valor a Aplicar (por mês) <span id="valAplicLabel">R$ 21.750</span></label>
+            <input type="range" id="valAplicar" min="1000" max="500000" step="500" value="21750" oninput="atualizarAplicacao()">
+            <div class="dica">Pré-preenchido com a economia mensal — ajuste se quiser</div>
+          </div>
+        </div>
+        <div>
+          <div class="input-group">
+            <label>📅 Período <span id="periodoLabel">12</span> meses</label>
+            <input type="range" id="periodoAplic" min="1" max="60" value="12" oninput="atualizarAplicacao()">
+            <div class="dica">De 1 a 60 meses</div>
+          </div>
+          <div class="input-group">
+            <label>📊 Taxa de Rendimento <span id="taxaAplicLabel">15% a.a.</span></label>
+            <input type="range" id="taxaAplic" min="8" max="22" step="0.5" value="15" oninput="atualizarAplicacao()">
+          </div>
+        </div>
       </div>
-      <div class="slider-group">
-        <label>Taxa de Rendimento do Investimento <span id="taxaAplicLabel">15% a.a.</span></label>
-        <input type="range" id="taxaAplic" min="8" max="22" step="0.5" value="15" oninput="calcularAplicacao()">
-      </div>
-      <div class="slider-group">
-        <label>Período <span id="periodoAplicLabel">1 ano</span></label>
-        <input type="range" id="periodoAplic" min="1" max="5" value="1" oninput="calcularAplicacao()">
-      </div>
+
       <div class="info-box">
         <span class="icon">💡</span>
-        <div>Sobre o rendimento incide <strong>IRRF de 15%</strong> (alíquota padrão para aplicações de renda fixa de pessoa jurídica).</div>
+        <div>O rendimento está sujeito a <strong>IRRF de 15%</strong>, alíquota padrão para aplicações de renda fixa de pessoa jurídica.</div>
       </div>
       <div class="ir-box">
         <span class="icon">🏛️</span>
-        <div><strong>IRRF é compensável no IRPJ trimestral:</strong> O valor retido na fonte <strong>não é um custo definitivo</strong>. A empresa abate integralmente o IRRF do IRPJ devido no trimestre. Para empresas no <strong>Lucro Real</strong>, o custo efetivo do IR é zero. Para <strong>Lucro Presumido</strong> e <strong>Simples Nacional</strong>, o IRRF também é compensável na declaração periódica.</div>
+        <div><strong>IRRF é compensável no IRPJ trimestral!</strong> O valor retido na fonte <strong>não é custo definitivo</strong> — a empresa abate integralmente do IRPJ devido. No Lucro Real, o custo efetivo do IR é zero.</div>
       </div>
-      <button onclick="calcularAplicacao()" style="width:100%;padding:12px;background:#10b981;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer">🔄 Recalcular Aplicação</button>
-    </div>
-    <div class="resumo-aplicacao" id="resumoAplicacao">
-      <div class="resumo-card"><div class="resumo-label">Valor Aplicado</div><div class="resumo-value color-blue" id="resumoValor">R$ 474.000</div></div>
-      <div class="resumo-card"><div class="resumo-label">Rendimento Bruto</div><div class="resumo-value color-green" id="resumoRendBruto">R$ 71.100</div></div>
-      <div class="resumo-card"><div class="resumo-label">(−) IRRF (15%)</div><div class="resumo-value color-red" id="resumoIR">−R$ 10.665</div></div>
-      <div class="resumo-card"><div class="resumo-label">💰 Ganho Líquido</div><div class="resumo-value color-yellow" id="resumoGanhoLiquido">R$ 60.435</div></div>
-      <div class="resumo-card"><div class="resumo-label">Total Acumulado</div><div class="resumo-value" style="color:#f1c40f;font-weight:800" id="resumoTotal">R$ 534.435</div></div>
-      <div class="resumo-card"><div class="resumo-label">🏛️ Compensável no IRPJ</div><div class="resumo-value color-orange" id="resumoCompensaIR">R$ 10.665</div></div>
-    </div>
-    <div class="card">
-      <div class="card-title">📊 Evolução Anual da Aplicação</div>
+
+      <div class="resultao">
+        <div class="r-label">💰 Valor Total Acumulado</div>
+        <div class="r-valor" id="totalAcumulado" style="color:#f1c40f">R$ 25.245</div>
+        <div class="r-sub">Aplicação mensal durante o período escolhido</div>
+      </div>
+
+      <div class="grid-cards">
+        <div class="card-info">
+          <div class="c-label">Total Investido</div>
+          <div class="c-valor color-blue" id="totalAplicado">R$ 261.000</div>
+        </div>
+        <div class="card-info">
+          <div class="c-label">Rendimento Bruto</div>
+          <div class="c-valor color-green" id="rendBruto">R$ 26.567</div>
+        </div>
+        <div class="card-info">
+          <div class="c-label">(−) IRRF (15%)</div>
+          <div class="c-valor color-red" id="irrfValor">−R$ 3.985</div>
+        </div>
+        <div class="card-info">
+          <div class="c-label">🏛️ Compensável no IRPJ</div>
+          <div class="c-valor color-orange" id="compensaIR">R$ 3.985</div>
+        </div>
+      </div>
+
+      <div style="font-size:13px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">📋 Evolução Mês a Mês</div>
       <div style="overflow-x:auto">
         <table class="app-table">
-          <thead><tr><th>Ano</th><th>Valor Inicial</th><th>Rend. Bruto</th><th>IRRF (15%)</th><th>Ganho Líquido</th><th>Total Acum.</th><th>Comp. IRPJ</th></tr></thead>
+          <thead><tr><th>Mês</th><th>Total Investido</th><th>Rendimento</th><th>IRRF (15%)</th><th>Saldo</th></tr></thead>
           <tbody id="tbodyEvolucao"></tbody>
         </table>
-      </div>
-      <div style="font-size:11px;color:#64748b;margin-top:8px;text-align:center">IRRF de 15% é integralmente compensável no IRPJ trimestral — não é custo definitivo para Lucro Real</div>
-    </div>
-    <div class="card">
-      <div class="card-title">📈 Crescimento do Valor Aplicado</div>
-      <div class="chart-wrap"><canvas id="chartAplicacao"></canvas></div>
-    </div>
-    <div class="card" style="border-color:#f1c40f">
-      <div class="card-title">🎯 Efeito Total — Crédito + Aplicação</div>
-      <div class="consolidado-grid">
-        <div class="consol-item"><span class="consol-label">📋 Economia Anual (Crédito)</span><span class="consol-value color-green" id="combEconomia">R$ 474.000</span></div>
-        <div class="consol-item" id="combFiscalItem"><span class="consol-label">🏛️ Benefício Fiscal (IRPJ+CSLL)</span><span class="consol-value color-orange" id="combFiscal">R$ 161.160</span></div>
-        <div class="consol-item"><span class="consol-label">📈 Ganho Líquido (Aplicação)</span><span class="consol-value color-purple" id="combAplicacao">R$ 60.435</span></div>
-        <div class="consol-item total"><span class="consol-label">💰 Impacto Total Ano</span><span class="consol-value" id="combTotal">R$ 695.595</span></div>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-let chartCredito = null, chartAplicacao = null;
-let regimeAtual = 'real';
+let chartCredito = null;
 
-function formatarLabel(inputId, labelId) {
-  const v = parseFloat(document.getElementById(inputId).value) || 0;
-  document.getElementById(labelId).textContent = 'R$ ' + Math.round(v).toLocaleString('pt-BR');
-}
-function fmt(v) { return 'R$ ' + Math.round(v).toLocaleString('pt-BR'); }
+function fmt(v){return 'R$ '+Math.round(v).toLocaleString('pt-BR')}
 
-function setRegime(val) {
-  regimeAtual = val;
-  document.querySelectorAll('.radio-group label').forEach(el => el.classList.remove('selected'));
-  document.querySelectorAll('.radio-group input').forEach(inp => {
-    if (inp.value === val) inp.checked = true;
-  });
-  const labels = document.querySelectorAll('.radio-group label');
-  if (val === 'real') labels[0].classList.add('selected');
-  else if (val === 'presumido') labels[1].classList.add('selected');
-  else labels[2].classList.add('selected');
-  calcular();
-}
-
-function switchTab(tab) {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-  if (tab === 'credito') {
-    document.querySelector('.tab-btn:first-child').classList.add('active');
-    document.getElementById('tab-credito').classList.add('active');
-  } else {
-    document.querySelector('.tab-btn:last-child').classList.add('active');
-    document.getElementById('tab-aplicacao').classList.add('active');
-    calcularAplicacao();
-  }
-}
-
-function toggleOtimizacao() {
-  const ativo = document.getElementById('toggleOtimizar').checked;
-  const slider = document.getElementById('taxaFidc');
-  const label = document.getElementById('toggleLabel');
-  if (ativo) {
-    slider.classList.add('slider-lock');
-    label.textContent = '🔒 Taxa FIDC otimizada automaticamente';
-    label.classList.add('locked');
-    calcular();
-  } else {
-    slider.classList.remove('slider-lock');
-    label.textContent = '⚡ Otimizar taxa FIDC automaticamente';
-    label.classList.remove('locked');
-  }
-}
-
-function getBF(eco) {
-  return regimeAtual === 'real' ? eco * 0.34 : 0;
-}
-
-function atualizarHero(eco, bFiscal, glAplicacao) {
-  const ecoAnual = eco * 12;
-  const bFiscalAnual = bFiscal * 12;
-  const total = ecoAnual + bFiscalAnual + glAplicacao;
-
-  document.getElementById('heroEconomia').textContent = fmt(ecoAnual);
-  document.getElementById('heroBF').textContent = fmt(bFiscalAnual);
-  document.getElementById('heroAplicacao').textContent = fmt(glAplicacao);
-  document.getElementById('heroTotal').textContent = fmt(total);
-
-  const elBFItem = document.getElementById('heroBFItem');
-  const elBFSub = document.getElementById('heroBFSub');
-  if (regimeAtual === 'real') {
-    elBFItem.style.display = 'block';
-    elBFSub.textContent = '34% — Lucro Real';
-  } else {
-    elBFItem.style.display = 'block';
-    document.getElementById('heroBF').textContent = 'R$ 0';
-    elBFSub.textContent = 'Não se aplica';
-  }
-}
-
-function calcular() {
-  const fat = parseFloat(document.getElementById('faturamento').value) || 0;
-  const cg = parseFloat(document.getElementById('taxaCg').value) || 0;
-  const prazoRec = parseInt(document.getElementById('prazoRec').value) || 55;
-  const taxaFidcInput = parseFloat(document.getElementById('taxaFidc').value) || 0;
-  const prazoFidc = parseInt(document.getElementById('prazoFidc').value) || 28;
+function atualizarCredito(){
+  const valor = parseFloat(document.getElementById('valorReceber').value)||0;
+  const prazo = parseInt(document.getElementById('prazoMedio').value)||45;
+  const taxaCg = parseFloat(document.getElementById('taxaCg').value)||0;
+  const taxaFidc = parseFloat(document.getElementById('taxaFidc').value)||0;
   const iof = 0.38;
-  const margem = parseFloat(document.getElementById('margemOp').value) || 15;
 
-  const cAdm = 15000;
-  const cCust = 1000;
-  const cGest = 20000;
-  const cAud = 1000;
-  const fixos = cAdm + cCust + cGest + cAud;
+  document.getElementById('valorLabel').textContent = fmt(valor);
+  document.getElementById('prazoLabel').textContent = prazo;
+  document.getElementById('taxaCgLabel').textContent = taxaCg.toFixed(1)+'%';
+  document.getElementById('taxaFidcLabel').textContent = taxaFidc.toFixed(1)+'%';
 
-  document.getElementById('totalCustosEstim').textContent = fmt(fixos);
+  const fator = prazo/30;
+  const custoCG = valor * fator * ((taxaCg + iof)/100);
+  const custoFIDC = valor * fator * (taxaFidc/100);
+  const economia = custoCG - custoFIDC;
+  const ecoAnual = economia * 12;
+  const bFiscal = economia > 0 ? economia * 0.34 : 0;
 
-  const gap = prazoRec - prazoFidc;
-  const custoCg = fat * (gap / 30) * ((cg + iof) / 100);
+  document.getElementById('ecoMensal').textContent = fmt(economia);
+  const elEco = document.getElementById('ecoMensal');
+  elEco.style.color = economia > 0 ? '#10b981' : '#ef4444';
 
-  let taxaFidc = taxaFidcInput;
-  if (document.getElementById('toggleOtimizar').checked) {
-    const ecoMin = fat * (margem / 100) * 0.01;
-    const maxCusto = custoCg - ecoMin - fixos;
-    if (maxCusto > 0 && fat > 0 && prazoFidc > 0) {
-      taxaFidc = Math.min(Math.max((maxCusto * 30 * 100) / (fat * prazoFidc), 0.5), 4);
-      document.getElementById('taxaFidc').value = taxaFidc;
-    }
+  document.getElementById('ecoAnual').textContent = fmt(ecoAnual);
+  document.getElementById('bfCard').textContent = fmt(bFiscal);
+  document.getElementById('custoCG').textContent = fmt(custoCG);
+  document.getElementById('custoFIDC').textContent = fmt(custoFIDC);
+
+  // Pré-preenche a aba de aplicação com a economia mensal (capado no máximo do slider)
+  const valAplic = document.getElementById('valAplicar');
+  const ecoMensalNum = Math.round(economia);
+  const capped = Math.min(Math.max(ecoMensalNum, 1000), 500000);
+  valAplic.value = capped;
+  document.getElementById('valAplicLabel').textContent = fmt(capped);
+
+  if(document.getElementById('tab-aplicacao').classList.contains('active')){
+    atualizarAplicacao();
   }
 
-  const custoFidc = fat * (prazoFidc / 30) * (taxaFidc / 100) + fixos;
-  const eco = custoCg - custoFidc;
-  const bFiscal = getBF(eco);
-  const impTotal = eco + bFiscal;
-
-  document.getElementById('fatLabel').textContent = 'R$ ' + Math.round(fat).toLocaleString('pt-BR');
-  document.getElementById('taxaCgLabel').textContent = cg.toFixed(2) + '%';
-  document.getElementById('prazoRecLabel').textContent = prazoRec;
-  document.getElementById('taxaFidcLabel').textContent = taxaFidc.toFixed(2) + '%';
-  document.getElementById('prazoFidcLabel').textContent = prazoFidc;
-  document.getElementById('margemLabel').textContent = margem + '%';
-
-  document.getElementById('economiaMensal').textContent = fmt(eco);
-  document.getElementById('economiaAnual').textContent = fmt(eco * 12);
-  document.getElementById('impactoTotal').textContent = fmt(impTotal);
-
-  const elBF = document.getElementById('beneficioFiscal');
-  const elBFSub = document.getElementById('bfSub');
-  const elBFCard = document.getElementById('bfCard');
-  if (regimeAtual === 'real') {
-    elBF.textContent = fmt(bFiscal);
-    elBFSub.textContent = '~34% sobre a economia mensal — Lucro Real';
-    elBF.className = 'stat-value color-orange';
-    elBFCard.className = 'stat-card highlight-orange';
-    document.getElementById('impactoSub').textContent = 'Economia + Benefício Fiscal';
-  } else {
-    elBF.textContent = 'R$ 0';
-    elBFSub.textContent = 'Apenas para Lucro Real';
-    elBF.className = 'stat-value color-muted';
-    elBFCard.className = 'stat-card disabled';
-    document.getElementById('impactoSub').textContent = 'Economia (sem benefício fiscal)';
-  }
-
-  document.getElementById('custoAntesValor').textContent = fmt(custoCg);
-  document.getElementById('custoDepoisValor').textContent = fmt(custoFidc);
-  const vPct = custoCg ? ((custoFidc - custoCg) / custoCg * 100) : 0;
-  const elV = document.getElementById('variacaoValor');
-  elV.textContent = fmt(custoFidc - custoCg) + ' (' + vPct.toFixed(1) + '%)';
-  elV.className = vPct < 0 ? 'color-green' : 'color-red';
-
-  document.getElementById('prazoAntes').textContent = prazoRec + ' dias';
-  document.getElementById('prazoDepois').textContent = '2 dias ⚡';
-  const difPrazo = prazoRec - 2;
-  const pctPrazo = prazoRec ? (difPrazo / prazoRec * 100) : 0;
-  document.getElementById('prazoVariacao').textContent = '−' + difPrazo + ' dias (−' + pctPrazo.toFixed(1) + '%)';
-
-  document.getElementById('consolEconomia').textContent = fmt(eco * 12);
-  const elConsolFiscal = document.getElementById('consolFiscal');
-  const elConsolFiscalItem = document.getElementById('consolFiscalItem');
-  if (regimeAtual === 'real') {
-    elConsolFiscal.textContent = fmt(bFiscal * 12);
-    elConsolFiscalItem.style.display = 'flex';
-  } else {
-    elConsolFiscal.textContent = 'R$ 0';
-  }
-  document.getElementById('consolTotal').textContent = fmt(impTotal * 12);
-  document.getElementById('economiaGerada').textContent = fmt(eco);
-
-  const ecoAnual = Math.round(eco * 12);
-  document.getElementById('valorAplicar').value = ecoAnual;
-  document.getElementById('valorAplicarLabel').textContent = 'R$ ' + ecoAnual.toLocaleString('pt-BR');
-
-  // Atualizar hero (a aplicação ainda não foi calculada, usar 0)
-  atualizarHero(eco, bFiscal, 0);
-
-  if (document.getElementById('tab-aplicacao').classList.contains('active')) calcularAplicacao();
-
-  if (chartCredito) chartCredito.destroy();
+  if(chartCredito) chartCredito.destroy();
   const ctx = document.getElementById('chartCredito').getContext('2d');
   chartCredito = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: ['Custo do Capital de Giro'],
-      datasets: [
-        { label: 'Antes (Conta Garantida)', data: [Math.round(custoCg)], backgroundColor: '#ef444480', borderColor: '#ef4444', borderWidth: 2 },
-        { label: 'Depois (FIDC)', data: [Math.round(custoFidc)], backgroundColor: '#10b98180', borderColor: '#10b981', borderWidth: 2 }
+    type:'bar',
+    data:{
+      labels:['Custo do Capital de Giro'],
+      datasets:[
+        {label:'Conta Garantida', data:[Math.round(custoCG)], backgroundColor:'#ef444480', borderColor:'#ef4444', borderWidth:2},
+        {label:'FIDC', data:[Math.round(custoFIDC)], backgroundColor:'#10b98180', borderColor:'#10b981', borderWidth:2}
       ]
     },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: {
-        legend: { labels: { color: '#e2e8f0', font: { size: 12 } } },
-        tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': R$ ' + ctx.parsed.y.toLocaleString('pt-BR') } },
-        datalabels: { anchor: 'end', align: 'end', color: '#e2e8f0', font: { weight: 'bold', size: 13 }, formatter: v => 'R$ ' + Math.round(v).toLocaleString('pt-BR'), offset: 2 }
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{labels:{color:'#e2e8f0',font:{size:12}}},
+        tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': R$ '+ctx.parsed.y.toLocaleString('pt-BR')}},
+        datalabels:{
+          anchor:'end', align:'end', color:'#e2e8f0', font:{weight:'bold',size:13},
+          formatter:v=>'R$ '+Math.round(v).toLocaleString('pt-BR'), offset:2
+        }
       },
-      scales: {
-        x: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } },
-        y: { ticks: { color: '#94a3b8', callback: v => 'R$ ' + Math.round(v).toLocaleString('pt-BR') }, grid: { color: '#334155' } }
+      scales:{
+        x:{ticks:{color:'#94a3b8'}, grid:{color:'#334155'}},
+        y:{ticks:{color:'#94a3b8',callback:v=>'R$ '+Math.round(v).toLocaleString('pt-BR')}, grid:{color:'#334155'}}
       }
     },
-    plugins: [ChartDataLabels]
+    plugins:[ChartDataLabels]
   });
 }
 
-function calcularAplicacao() {
-  const valor = parseFloat(document.getElementById('valorAplicar').value) || 0;
-  const taxa = parseFloat(document.getElementById('taxaAplic').value) || 15;
-  const periodo = parseInt(document.getElementById('periodoAplic').value) || 1;
+function atualizarAplicacao(){
+  const valorMensal = parseFloat(document.getElementById('valAplicar').value)||0;
+  const periodo = parseInt(document.getElementById('periodoAplic').value)||12;
+  const taxaAnual = parseFloat(document.getElementById('taxaAplic').value)||15;
   const aliquotaIR = 0.15;
-  document.getElementById('taxaAplicLabel').textContent = taxa + '% a.a.';
-  document.getElementById('periodoAplicLabel').textContent = periodo + (periodo > 1 ? ' anos' : ' ano');
 
-  const taxaD = taxa / 100;
-  let acum = 0;
+  document.getElementById('valAplicLabel').textContent = fmt(valorMensal);
+  document.getElementById('periodoLabel').textContent = periodo;
+  document.getElementById('taxaAplicLabel').textContent = taxaAnual.toFixed(1)+'% a.a.';
+
+  const taxaMensal = Math.pow(1 + taxaAnual/100, 1/12) - 1;
+
+  let totalInvestido = 0;
+  let totalRendBruto = 0;
+  let totalIR = 0;
+  let saldo = 0;
   const linhas = [];
-  for (let a = 1; a <= periodo; a++) {
-    const rb = valor * taxaD;
-    const ir = rb * aliquotaIR;
-    const gl = rb - ir;
-    acum = a === 1 ? valor + gl : acum + gl;
-    linhas.push({ ano: a, inicial: a === 1 ? valor : acum - gl, rb, ir, gl, acum });
-  }
-  const u = linhas[linhas.length - 1];
 
-  document.getElementById('resumoValor').textContent = fmt(valor);
-  document.getElementById('resumoRendBruto').textContent = fmt(u.rb);
-  document.getElementById('resumoIR').textContent = '−' + fmt(u.ir);
-  document.getElementById('resumoGanhoLiquido').textContent = fmt(u.gl);
-  document.getElementById('resumoTotal').textContent = fmt(u.acum);
-  document.getElementById('resumoCompensaIR').textContent = fmt(u.ir);
+  for(let m = 1; m <= periodo; m++){
+    totalInvestido += valorMensal;
+    const rendMes = (saldo + valorMensal) * taxaMensal;
+    const irMes = rendMes * aliquotaIR;
+    const liqMes = rendMes - irMes;
+    totalRendBruto += rendMes;
+    totalIR += irMes;
+    saldo += valorMensal + liqMes;
+    linhas.push({mes: m, investido: totalInvestido, rend: rendMes, ir: irMes, saldo});
+  }
+
+  const ultima = linhas[linhas.length-1];
+
+  document.getElementById('totalAplicado').textContent = fmt(totalInvestido);
+  document.getElementById('rendBruto').textContent = fmt(totalRendBruto);
+  document.getElementById('irrfValor').textContent = '−'+fmt(totalIR);
+  document.getElementById('compensaIR').textContent = fmt(totalIR);
+  document.getElementById('totalAcumulado').textContent = fmt(ultima ? ultima.saldo : 0);
 
   const tbody = document.getElementById('tbodyEvolucao');
   tbody.innerHTML = '';
-  linhas.forEach(l => {
+  const step = periodo <= 12 ? 1 : Math.ceil(periodo/12);
+  linhas.forEach((l, idx) => {
+    if((idx+1) % step !== 0 && idx !== linhas.length-1 && idx !== 0) return;
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td style="font-weight:700;color:#f1c40f">${l.ano}º</td><td>${fmt(l.inicial)}</td><td class="color-green">${fmt(l.rb)}</td><td class="color-red">−${fmt(l.ir)}</td><td class="color-yellow">${fmt(l.gl)}</td><td style="font-weight:700">${fmt(l.acum)}</td><td class="color-orange">${fmt(l.ir)}</td>`;
+    tr.innerHTML = `<td style="font-weight:700;color:#f1c40f">${l.mes}º</td><td>${fmt(l.investido)}</td><td class="color-green">${fmt(l.rend)}</td><td class="color-red">−${fmt(l.ir)}</td><td style="font-weight:700">${fmt(l.saldo)}</td>`;
     tbody.appendChild(tr);
-  });
-
-  const ecoMensal = parseFloat(document.getElementById('economiaMensal').textContent.replace(/[R$\s.]/g,'').replace(',','.')) || 0;
-  const ecoAnual = ecoMensal * 12;
-  const bFiscal = regimeAtual === 'real' ? (ecoMensal * 0.34) : 0;
-
-  document.getElementById('combEconomia').textContent = fmt(ecoAnual);
-  const elCombFiscal = document.getElementById('combFiscal');
-  const elCombFiscalItem = document.getElementById('combFiscalItem');
-  if (regimeAtual === 'real') {
-    elCombFiscal.textContent = fmt(bFiscal * 12);
-    elCombFiscalItem.style.display = 'flex';
-  } else {
-    elCombFiscal.textContent = 'R$ 0';
-  }
-  document.getElementById('combAplicacao').textContent = fmt(u.gl);
-  document.getElementById('combTotal').textContent = fmt(ecoAnual + bFiscal * 12 + u.gl);
-
-  // Atualizar hero com o ganho líquido da aplicação
-  atualizarHero(ecoMensal, bFiscal, u.gl);
-
-  if (chartAplicacao) chartAplicacao.destroy();
-  const ctx2 = document.getElementById('chartAplicacao').getContext('2d');
-  chartAplicacao = new Chart(ctx2, {
-    type: 'bar',
-    data: {
-      labels: linhas.map(l => l.ano + 'º ano'),
-      datasets: [
-        { label: 'Valor Aplicado', data: linhas.map(() => Math.round(valor)), backgroundColor: '#3b82f680', borderColor: '#3b82f6', borderWidth: 2 },
-        { label: 'Total Acumulado', data: linhas.map(l => Math.round(l.acum)), backgroundColor: '#10b98180', borderColor: '#10b981', borderWidth: 2 }
-      ]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: {
-        legend: { labels: { color: '#e2e8f0', font: { size: 12 } } },
-        tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': R$ ' + ctx.parsed.y.toLocaleString('pt-BR') } },
-        datalabels: { anchor: 'end', align: 'end', color: '#e2e8f0', font: { weight: 'bold', size: 12 }, formatter: v => 'R$ ' + Math.round(v).toLocaleString('pt-BR'), offset: 2 }
-      },
-      scales: {
-        x: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } },
-        y: { ticks: { color: '#94a3b8', callback: v => 'R$ ' + Math.round(v).toLocaleString('pt-BR') }, grid: { color: '#334155' } }
-      }
-    },
-    plugins: [ChartDataLabels]
   });
 }
 
+function switchTab(tab){
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  if(tab === 'credito'){
+    document.querySelectorAll('.tab-btn')[0].classList.add('active');
+    document.getElementById('tab-credito').classList.add('active');
+  } else {
+    document.querySelectorAll('.tab-btn')[1].classList.add('active');
+    document.getElementById('tab-aplicacao').classList.add('active');
+    atualizarAplicacao();
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-  formatarLabel('faturamento', 'fatLabel');
-  calcular();
+  atualizarCredito();
 });
 </script>
 </body>
