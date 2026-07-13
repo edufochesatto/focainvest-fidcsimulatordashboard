@@ -155,9 +155,9 @@ body{background:#fff;color:#000}
       </div>
       <div style="margin-bottom:4px;font-size:13px;color:#94a3b8">Regime Tributário:</div>
       <div class="radio-group">
-        <label class="selected"><input type="radio" name="regime" value="real" checked onchange="setRegime('real');calcular()"> 🏛️ Lucro Real</label>
-        <label><input type="radio" name="regime" value="presumido" onchange="setRegime('presumido');calcular()"> 📋 Lucro Presumido</label>
-        <label><input type="radio" name="regime" value="simples" onchange="setRegime('simples');calcular()"> 🏪 Simples Nacional</label>
+        <label class="selected"><input type="radio" name="regime" value="real" checked onchange="setRegime('real')"> 🏛️ Lucro Real</label>
+        <label><input type="radio" name="regime" value="presumido" onchange="setRegime('presumido')"> 📋 Lucro Presumido</label>
+        <label><input type="radio" name="regime" value="simples" onchange="setRegime('simples')"> 🏪 Simples Nacional</label>
       </div>
 
       <!-- PASSO 2 -->
@@ -349,6 +349,7 @@ function setRegime(val) {
   if (val === 'real') labels[0].classList.add('selected');
   else if (val === 'presumido') labels[1].classList.add('selected');
   else labels[2].classList.add('selected');
+  calcular();
 }
 
 function switchTab(tab) {
