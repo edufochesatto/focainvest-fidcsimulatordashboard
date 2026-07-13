@@ -98,6 +98,8 @@ td{color:#e2e8f0}
 .estim-total{background:#1a2332;border:1px solid #f59e0b}
 .estim-total .estim-value{color:#f59e0b;font-size:18px}
 .subtitle{font-size:12px;color:#64748b;margin-top:-8px;margin-bottom:14px;font-style:italic}
+.info-box{background:#1e3a5f;border:1px solid #3b82f6;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12px;color:#93c5fd;display:flex;align-items:flex-start;gap:8px}
+.info-box .icon{font-size:16px;flex-shrink:0}
 @media print{
 .tabs,.tab-btn,.simulador-section,.btn-print{display:none!important}
 .tab-content{display:block!important}
@@ -118,6 +120,7 @@ body{background:#fff;color:#000}
 .estim-item{background:#f1f5f9!important;border-color:#ccc!important}
 .estim-value{color:#000!important}
 .estim-total{border-color:#f59e0b!important}
+.info-box{background:#eff6ff!important;border-color:#3b82f6!important;color:#1e40af!important}
 }
 </style>
 </head>
@@ -193,8 +196,9 @@ body{background:#fff;color:#000}
         <input type="range" id="taxaFidc" min="0.5" max="4" step="0.01" value="1.8" oninput="calcular()">
       </div>
       <div class="slider-group">
-        <label>Prazo Médio de Recebimento <span id="prazoFidcLabel">28</span> dias</label>
+        <label>Prazo Médio do Portfolio <span id="prazoFidcLabel">28</span> dias</label>
         <input type="range" id="prazoFidc" min="5" max="60" value="28" oninput="calcular()">
+        <div style="font-size:11px;color:#64748b;margin-top:2px">Prazo médio dos títulos cedidos ao FIDC (uso interno)</div>
       </div>
 
       <!-- PASSO 4 -->
@@ -254,7 +258,7 @@ body{background:#fff;color:#000}
           <thead><tr><th>Indicador</th><th>Antes (Conta Garantida)</th><th>Depois (FIDC)</th><th>Variação</th></tr></thead>
           <tbody>
             <tr><td style="font-weight:600">Custo do Capital de Giro</td><td id="custoAntesValor">R$ 94.500</td><td id="custoDepoisValor">R$ 55.000</td><td id="variacaoValor" class="color-green">−R$ 39.500 (−41,8%)</td></tr>
-            <tr><td>Prazo Médio</td><td id="prazoAntes">55 dias</td><td id="prazoDepois">28 dias</td><td class="color-green">−27 dias (−49,1%)</td></tr>
+            <tr><td>Prazo para Receber</td><td id="prazoAntes">55 dias</td><td id="prazoDepois">2 dias ⚡</td><td class="color-green" id="prazoVariacao">−53 dias (−96,4%)</td></tr>
             <tr><td>IOF</td><td>0,38%</td><td>—</td><td class="color-green">Eliminado</td></tr>
           </tbody>
         </table>
@@ -290,26 +294,33 @@ body{background:#fff;color:#000}
         <label>Período <span id="periodoAplicLabel">1 ano</span></label>
         <input type="range" id="periodoAplic" min="1" max="5" value="1" oninput="calcularAplicacao()">
       </div>
+
+      <div class="info-box">
+        <span class="icon">💡</span>
+        <div>O <strong>IRRF de 15%</strong> sobre o rendimento é <strong>compensável</strong> — a empresa abate esse valor do IRPJ devido no fim do período, portanto não é um custo definitivo.</div>
+      </div>
+
       <button onclick="calcularAplicacao()" style="width:100%;padding:12px;background:#10b981;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer">🔄 Recalcular Aplicação</button>
     </div>
 
     <div class="resumo-aplicacao" id="resumoAplicacao">
       <div class="resumo-card"><div class="resumo-label">Valor Aplicado</div><div class="resumo-value color-blue" id="resumoValor">R$ 474.000</div></div>
       <div class="resumo-card"><div class="resumo-label">Rendimento Bruto</div><div class="resumo-value color-green" id="resumoRendBruto">R$ 71.100</div></div>
-      <div class="resumo-card"><div class="resumo-label">(−) IRPJ+CSLL (34%)</div><div class="resumo-value color-red" id="resumoIR">−R$ 24.174</div></div>
-      <div class="resumo-card"><div class="resumo-label">💰 Ganho Líquido</div><div class="resumo-value color-yellow" id="resumoGanhoLiquido">R$ 46.926</div></div>
-      <div class="resumo-card"><div class="resumo-label">Total Acumulado</div><div class="resumo-value" style="color:#f1c40f;font-weight:800" id="resumoTotal">R$ 520.926</div></div>
-      <div class="resumo-card"><div class="resumo-label">🏛️ Compensação IRPJ</div><div class="resumo-value color-orange" id="resumoCompensaIR">R$ 24.174</div></div>
+      <div class="resumo-card"><div class="resumo-label">(−) IRRF (15% compensável)</div><div class="resumo-value color-red" id="resumoIR">−R$ 10.665</div></div>
+      <div class="resumo-card"><div class="resumo-label">💰 Ganho Líquido</div><div class="resumo-value color-yellow" id="resumoGanhoLiquido">R$ 60.435</div></div>
+      <div class="resumo-card"><div class="resumo-label">Total Acumulado</div><div class="resumo-value" style="color:#f1c40f;font-weight:800" id="resumoTotal">R$ 534.435</div></div>
+      <div class="resumo-card"><div class="resumo-label">🏛️ IRRF Compensável</div><div class="resumo-value color-orange" id="resumoCompensaIR">R$ 10.665</div></div>
     </div>
 
     <div class="card">
       <div class="card-title">📊 Evolução Anual da Aplicação</div>
       <div style="overflow-x:auto">
         <table class="app-table">
-          <thead><tr><th>Ano</th><th>Valor Inicial</th><th>Rendimento Bruto</th><th>IRPJ+CSLL (34%)</th><th>Ganho Líquido</th><th>Total Acumulado</th></tr></thead>
+          <thead><tr><th>Ano</th><th>Valor Inicial</th><th>Rendimento Bruto</th><th>IRRF (15%)</th><th>Ganho Líquido</th><th>Total Acumulado</th></tr></thead>
           <tbody id="tbodyEvolucao"></tbody>
         </table>
       </div>
+      <div style="font-size:11px;color:#64748b;margin-top:8px;text-align:center">IRRF de 15% é compensável — abatido do IRPJ devido no período</div>
     </div>
 
     <div class="card">
@@ -322,8 +333,8 @@ body{background:#fff;color:#000}
       <div class="consolidado-grid">
         <div class="consol-item"><span class="consol-label">📋 Economia Anual (Crédito)</span><span class="consol-value color-green" id="combEconomia">R$ 474.000</span></div>
         <div class="consol-item" id="combFiscalItem"><span class="consol-label">🏛️ Benefício Fiscal (IRPJ+CSLL)</span><span class="consol-value color-orange" id="combFiscal">R$ 161.160</span></div>
-        <div class="consol-item"><span class="consol-label">📈 Ganho Líquido (Aplicação)</span><span class="consol-value color-purple" id="combAplicacao">R$ 46.926</span></div>
-        <div class="consol-item total"><span class="consol-label">💰 Impacto Total Ano</span><span class="consol-value" id="combTotal">R$ 682.086</span></div>
+        <div class="consol-item"><span class="consol-label">📈 Ganho Líquido (Aplicação)</span><span class="consol-value color-purple" id="combAplicacao">R$ 60.435</span></div>
+        <div class="consol-item total"><span class="consol-label">💰 Impacto Total Ano</span><span class="consol-value" id="combTotal">R$ 695.595</span></div>
       </div>
     </div>
   </div>
@@ -454,8 +465,13 @@ function calcular() {
   const elV = document.getElementById('variacaoValor');
   elV.textContent = fmt(custoFidc - custoCg) + ' (' + vPct.toFixed(1) + '%)';
   elV.className = vPct < 0 ? 'color-green' : 'color-red';
+
+  // Tabela: prazo para receber mostra 2 dias pro cliente
   document.getElementById('prazoAntes').textContent = prazoRec + ' dias';
-  document.getElementById('prazoDepois').textContent = prazoFidc + ' dias';
+  document.getElementById('prazoDepois').textContent = '2 dias ⚡';
+  const difPrazo = prazoRec - 2;
+  const pctPrazo = prazoRec ? (difPrazo / prazoRec * 100) : 0;
+  document.getElementById('prazoVariacao').textContent = '−' + difPrazo + ' dias (−' + pctPrazo.toFixed(1) + '%)';
 
   document.getElementById('consolEconomia').textContent = fmt(eco * 12);
   const elConsolFiscal = document.getElementById('consolFiscal');
@@ -510,6 +526,7 @@ function calcularAplicacao() {
   const valor = parseFloat(document.getElementById('valorAplicar').value) || 0;
   const taxa = parseFloat(document.getElementById('taxaAplic').value) || 15;
   const periodo = parseInt(document.getElementById('periodoAplic').value) || 1;
+  const aliquotaIR = 0.15;
   document.getElementById('taxaAplicLabel').textContent = taxa + '% a.a.';
   document.getElementById('periodoAplicLabel').textContent = periodo + (periodo > 1 ? ' anos' : ' ano');
 
@@ -518,7 +535,7 @@ function calcularAplicacao() {
   const linhas = [];
   for (let a = 1; a <= periodo; a++) {
     const rb = valor * taxaD;
-    const ir = rb * 0.34;
+    const ir = rb * aliquotaIR;
     const gl = rb - ir;
     acum = a === 1 ? valor + gl : acum + gl;
     linhas.push({ ano: a, inicial: a === 1 ? valor : acum - gl, rb, ir, gl, acum });
