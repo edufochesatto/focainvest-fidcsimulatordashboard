@@ -32,21 +32,15 @@ body{background:#0f172a;color:#e2e8f0;min-height:100vh;padding:20px}
 .input-group{margin-bottom:16px}
 .input-group label{display:flex;justify-content:space-between;font-size:14px;color:#cbd5e1;margin-bottom:4px}
 .input-group label span{color:#f1c40f;font-weight:700}
-.input-group input[type=range]{width:100%;accent-color:#3b82f6;height:6px;border-radius:3px}
+.input-group input[type=range]{width:100%;accent-color:#3b82f6;height:6px;border-radius:3px;cursor:pointer}
 .input-group .dica{font-size:11px;color:#64748b;margin-top:2px}
 
-/* Input formatado com máscara */
 .input-valor-wrap{position:relative;margin-bottom:6px}
 .input-valor-wrap .prefixo{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;font-weight:700;color:#94a3b8;pointer-events:none;z-index:2}
 .input-valor-wrap input[type=text]{width:100%;padding:12px 14px 12px 42px;background:#0f172a;border:1px solid #334155;border-radius:8px;color:#e2e8f0;font-size:18px;font-weight:700;text-align:left;outline:none;transition:border .2s}
 .input-valor-wrap input[type=text]:focus{border-color:#3b82f6;box-shadow:0 0 0 2px rgba(59,130,246,.15)}
 .input-valor-wrap input[type=text]::placeholder{color:#475569;font-weight:400}
 
-.iof-fixo{display:flex;align-items:center;justify-content:space-between;background:#0f172a;border-radius:8px;padding:10px 14px;border:1px solid #334155;margin-bottom:16px}
-.iof-fixo .label{font-size:13px;color:#94a3b8}
-.iof-fixo .valor{font-size:15px;font-weight:700;color:#f59e0b}
-
-/* Box de resultado principal */
 .resultao{background:linear-gradient(135deg,#064e3b,#022c22);border:2px solid #10b981;border-radius:12px;padding:20px;text-align:center;margin-bottom:16px}
 .resultao .r-label{font-size:13px;color:#94a3b8;margin-bottom:2px}
 .resultao .r-valor{font-size:32px;font-weight:800;color:#10b981}
@@ -57,6 +51,17 @@ body{background:#0f172a;color:#e2e8f0;min-height:100vh;padding:20px}
 .card-info .c-label{font-size:11px;color:#94a3b8}
 .card-info .c-valor{font-size:18px;font-weight:700;margin-top:2px}
 
+/* Custo breakdown */
+.custo-breakdown{background:#0f172a;border-radius:10px;padding:16px;margin-bottom:16px;border:1px solid #334155}
+.custo-breakdown .cb-title{font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:.3px;margin-bottom:10px}
+.custo-linha{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #1e293b;font-size:14px}
+.custo-linha:last-child{border-bottom:none}
+.custo-linha .cl-label{color:#cbd5e1}
+.custo-linha .cl-valor{font-weight:600}
+.custo-linha.total{font-weight:700;font-size:15px;padding-top:8px;margin-top:4px;border-top:2px solid #334155}
+.custo-linha.total .cl-label{color:#f1c40f}
+.custo-linha.total .cl-valor{color:#f1c40f}
+
 .comp-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
 .comp-item{background:#0f172a;border-radius:10px;padding:14px;text-align:center;border:1px solid #334155}
 .comp-item .cp-label{font-size:11px;color:#94a3b8}
@@ -64,7 +69,6 @@ body{background:#0f172a;color:#e2e8f0;min-height:100vh;padding:20px}
 .comp-item.destaque{border-color:#10b981;background:linear-gradient(135deg,#064e3b,#022c22)}
 .comp-item.destaque .cp-valor{color:#10b981}
 
-/* Indicadores de liquidez e caixa */
 .grid-indicadores{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
 .indicador-card{background:#0f172a;border-radius:10px;padding:14px;border-left:3px solid #3b82f6;display:flex;justify-content:space-between;align-items:center}
 .indicador-card.verde{border-left-color:#10b981}
@@ -101,12 +105,16 @@ body{background:#0f172a;color:#e2e8f0;min-height:100vh;padding:20px}
 body{background:#fff;padding:10px}
 .card{background:#f8fafc!important;border-color:#ddd!important}
 .logo{color:#000!important}
-.iof-fixo{background:#f1f5f9!important;border-color:#ccc!important}
 .resultao{background:#f0fdf4!important;border-color:#10b981!important}
 .resultao .r-valor{color:#059669!important}
 .card-info{background:#f1f5f9!important}
 .comp-item{background:#f1f5f9!important}
 .comp-item.destaque{background:#f0fdf4!important;border-color:#10b981!important}
+.custo-breakdown{background:#f1f5f9!important}
+.custo-linha{color:#000!important}
+.custo-linha .cl-label{color:#475569!important}
+.custo-linha.total{border-top-color:#ccc!important}
+.custo-linha.total .cl-label,.custo-linha.total .cl-valor{color:#b45309!important}
 .info-box{background:#eff6ff!important;border-color:#3b82f6!important;color:#1e40af!important}
 .ir-box{background:#fffbeb!important;border-color:#f59e0b!important;color:#92400e!important}
 .tabs,.tab-btn,.simulador-section{display:none!important}
@@ -148,20 +156,77 @@ body{background:#fff;padding:10px}
         </div>
         <div>
           <div class="input-group">
-            <label>🏦 Taxa Conta Garantida <span id="taxaCgLabel">3,5%</span></label>
-            <input type="range" id="taxaCg" min="1" max="8" step="0.1" value="3.5" oninput="atualizarCredito()">
+            <label>🏦 Taxa Conta Garantida <span id="taxaCgLabel">4,0%</span></label>
+            <input type="range" id="taxaCg" min="1" max="8" step="0.1" value="4" oninput="atualizarCredito()">
             <div class="dica">Taxa que o banco cobra hoje</div>
           </div>
           <div class="input-group">
-            <label>📊 Taxa do FIDC <span id="taxaFidcLabel">2,0%</span></label>
-            <input type="range" id="taxaFidc" min="2" max="5" step="0.1" value="2" oninput="atualizarCredito()">
-            <div class="dica">Arraste para simular diferentes cenários</div>
+            <label>📊 Taxa do FIDC <span id="taxaFidcLabel">3,0%</span></label>
+            <input type="range" id="taxaFidc" min="0.5" max="5" step="0.1" value="3" oninput="atualizarCredito()">
+            <div class="dica">Sem IOF — taxa menor que a do banco</div>
           </div>
         </div>
       </div>
-      <div class="iof-fixo">
-        <span class="label">🔒 IOF (fixo)</span>
-        <span class="valor">0,38%</span>
+
+      <!-- CUSTO BREAKDOWN -->
+      <div class="grid-2" style="gap:12px">
+        <div class="custo-breakdown">
+          <div class="cb-title">🏦 Conta Garantida</div>
+          <div class="custo-linha">
+            <span class="cl-label">Taxa</span>
+            <span class="cl-valor" id="cgTaxaLabel">4,0%</span>
+          </div>
+          <div class="custo-linha">
+            <span class="cl-label">IOF (0,38%)</span>
+            <span class="cl-valor color-red" id="cgIofValor">R$ 2.850</span>
+          </div>
+          <div class="custo-linha total">
+            <span class="cl-label">Custo Total CG / mês</span>
+            <span class="cl-valor" id="cgTotalMes">R$ 32.300</span>
+          </div>
+          <div class="custo-linha" style="padding-top:6px">
+            <span class="cl-label">📅 Custo no ano</span>
+            <span class="cl-valor color-red" id="cgTotalAno">R$ 387.600</span>
+          </div>
+        </div>
+        <div class="custo-breakdown">
+          <div class="cb-title">⚡ FIDC</div>
+          <div class="custo-linha">
+            <span class="cl-label">Taxa</span>
+            <span class="cl-valor" id="fidcTaxaLabel">3,0%</span>
+          </div>
+          <div class="custo-linha">
+            <span class="cl-label">IOF</span>
+            <span class="cl-valor color-green">R$ 0</span>
+          </div>
+          <div class="custo-linha total">
+            <span class="cl-label">Custo Total FIDC / mês</span>
+            <span class="cl-valor" id="fidcTotalMes">R$ 22.500</span>
+          </div>
+          <div class="custo-linha" style="padding-top:6px">
+            <span class="cl-label">📅 Custo no ano</span>
+            <span class="cl-valor color-green" id="fidcTotalAno">R$ 270.000</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ECONOMIA -->
+      <div class="resultao">
+        <div class="r-label">💰 Economia com FIDC</div>
+        <div class="r-valor" id="ecoMensal">R$ 9.800</div>
+        <div class="r-sub" id="ecoSub">por mês</div>
+      </div>
+
+      <div class="grid-cards">
+        <div class="card-info">
+          <div class="c-label">📈 Economia no Ano</div>
+          <div class="c-valor color-yellow" id="ecoAnual">R$ 117.600</div>
+        </div>
+        <div class="card-info">
+          <div class="c-label">🏛️ Benefício Fiscal (IRPJ+CSLL — 34%)</div>
+          <div class="c-valor color-orange" id="bfCard">R$ 39.984</div>
+          <div style="font-size:10px;color:#64748b">Apenas Lucro Real</div>
+        </div>
       </div>
 
       <!-- COMPARAÇÃO DE PRAZO -->
@@ -186,7 +251,7 @@ body{background:#fff;padding:10px}
         </div>
       </div>
 
-      <!-- INDICADORES DE LIQUIDEZ E CAIXA -->
+      <!-- INDICADORES -->
       <div style="font-size:13px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">💧 Indicadores de Liquidez e Caixa</div>
       <div class="grid-indicadores">
         <div class="indicador-card verde">
@@ -201,12 +266,12 @@ body{background:#fff;padding:10px}
         </div>
         <div class="indicador-card verde">
           <div class="ic-left">
-            <span class="ic-label">💰 Necessidade de Capital de Giro</span>
-            <span class="ic-desc">Recursos presos no recebimento</span>
+            <span class="ic-label">💰 Capital de Giro Liberado</span>
+            <span class="ic-desc">Recursos antes presos nos recebíveis</span>
           </div>
           <div class="ic-right">
-            <div class="ic-valor color-green" id="ncgAntes">R$ 5.000.000</div>
-            <div class="ic-sub" id="ncgDepois">↓ R$ 222.222 com FIDC</div>
+            <div class="ic-valor color-green" id="capitalLiberado">R$ 4.777.778</div>
+            <div class="ic-sub">com FIDC</div>
           </div>
         </div>
         <div class="indicador-card verde">
@@ -221,51 +286,19 @@ body{background:#fff;padding:10px}
         </div>
         <div class="indicador-card verde">
           <div class="ic-left">
-            <span class="ic-label">🏦 Custo do Capital Giro</span>
-            <span class="ic-desc">Economia com a troca</span>
+            <span class="ic-label">🏦 Economia no Custo</span>
+            <span class="ic-desc">Redução mensal com FIDC</span>
           </div>
           <div class="ic-right">
-            <div class="ic-valor color-green" id="custoGiroEconomia">R$ 217.500</div>
-            <div class="ic-sub">economia mensal</div>
+            <div class="ic-valor color-green" id="economiaIndicador">R$ 9.800</div>
+            <div class="ic-sub">por mês</div>
           </div>
         </div>
       </div>
 
-      <!-- RESULTADO PRINCIPAL -->
-      <div class="resultao" style="margin-top:16px">
-        <div class="r-label">💰 Economia Mensal</div>
-        <div class="r-valor" id="ecoMensal">R$ 217.500</div>
-        <div class="r-sub">Antecipando pelo FIDC em vez da Conta Garantida</div>
-      </div>
-
-      <div class="grid-cards">
-        <div class="card-info">
-          <div class="c-label">📈 Economia Projetada (12 meses)</div>
-          <div class="c-valor color-yellow" id="ecoAnual">R$ 2.610.000</div>
-        </div>
-        <div class="card-info">
-          <div class="c-label">🏛️ Benefício Fiscal (IRPJ+CSLL — 34%)</div>
-          <div class="c-valor color-orange" id="bfCard">R$ 887.400</div>
-          <div style="font-size:10px;color:#64748b">Apenas Lucro Real</div>
-        </div>
-      </div>
-
-      <div style="font-size:13px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">⚖️ Comparativo de Custo</div>
-      <div class="comp-grid">
-        <div class="comp-item">
-          <div class="cp-label">Custo Conta Garantida</div>
-          <div class="cp-valor color-red" id="custoCG">R$ 292.500</div>
-          <div style="font-size:10px;color:#64748b">com IOF</div>
-        </div>
-        <div class="comp-item destaque">
-          <div class="cp-label">Custo FIDC</div>
-          <div class="cp-valor" id="custoFIDC">R$ 75.000</div>
-          <div style="font-size:10px;color:#94a3b8">sem IOF</div>
-        </div>
-      </div>
-
+      <!-- GRÁFICO -->
       <div class="chart-wrap"><canvas id="chartCredito"></canvas></div>
-      <div class="chart-sub">Comparativo do Custo — Conta Garantida vs FIDC</div>
+      <div class="chart-sub">Comparativo do Custo Mensal — Conta Garantida vs FIDC</div>
     </div>
   </div>
 
@@ -273,14 +306,14 @@ body{background:#fff;padding:10px}
   <div id="tab-aplicacao" class="tab-content">
     <div class="card">
       <div class="card-title">📈 Aplicação da Economia</div>
-      <p style="font-size:14px;color:#94a3b8;margin-bottom:16px">Veja quanto sua economia mensal pode render se aplicada — e como o IRRF de 15% é <strong>compensável</strong> no IRPJ.</p>
+      <p style="font-size:14px;color:#94a3b8;margin-bottom:16px">Veja quanto sua economia mensal pode render se aplicada mensalmente. <strong>IRRF de 15%</strong> incide apenas no resgate — e é <strong>compensável</strong> no IRPJ.</p>
 
       <div class="grid-2">
         <div>
           <div class="input-group">
-            <label>💰 Valor a Aplicar (por mês) <span id="valAplicLabel">R$ 217.500</span></label>
-            <input type="range" id="valAplicar" min="1000" max="5000000" step="1000" value="217500" oninput="atualizarAplicacao()">
-            <div class="dica">Pré-preenchido com a economia mensal — ajuste se quiser</div>
+            <label>💰 Aporte Mensal <span id="valAplicLabel">R$ 9.800</span></label>
+            <input type="range" id="valAplicar" min="1000" max="500000" step="100" value="9800" oninput="atualizarAplicacao()">
+            <div class="dica">Pré-preenchido com a economia mensal</div>
           </div>
         </div>
         <div>
@@ -296,47 +329,47 @@ body{background:#fff;padding:10px}
         </div>
       </div>
 
-      <div class="info-box">
-        <span class="icon">💡</span>
-        <div>O rendimento está sujeito a <strong>IRRF de 15%</strong>, alíquota padrão para aplicações de renda fixa de pessoa jurídica.</div>
-      </div>
-      <div class="ir-box">
-        <span class="icon">🏛️</span>
-        <div><strong>IRRF é compensável no IRPJ trimestral!</strong> O valor retido na fonte <strong>não é custo definitivo</strong> — a empresa abate integralmente do IRPJ devido. No Lucro Real, o custo efetivo do IR é zero.</div>
-      </div>
-
+      <!-- RESUMO -->
       <div class="resultao">
-        <div class="r-label">💰 Valor Total Acumulado</div>
-        <div class="r-valor" id="totalAcumulado" style="color:#f1c40f">R$ 252.450</div>
-        <div class="r-sub">Aplicação mensal durante o período escolhido</div>
+        <div class="r-label">💰 Total Acumulado (sem IR)</div>
+        <div class="r-valor" id="totalAcumulado" style="color:#f1c40f">R$ 129.748</div>
+        <div class="r-sub" id="periodoExibido">12 aportes mensais de R$ 9.800</div>
       </div>
 
       <div class="grid-cards">
         <div class="card-info">
-          <div class="c-label">Total Investido</div>
-          <div class="c-valor color-blue" id="totalAplicado">R$ 2.610.000</div>
+          <div class="c-label">Total Aportado</div>
+          <div class="c-valor color-blue" id="totalAportado">R$ 117.600</div>
         </div>
         <div class="card-info">
-          <div class="c-label">Rendimento Bruto</div>
-          <div class="c-valor color-green" id="rendBruto">R$ 265.670</div>
+          <div class="c-label">Rendimento Bruto Acumulado</div>
+          <div class="c-valor color-green" id="rendBruto">R$ 12.148</div>
         </div>
-        <div class="card-info">
-          <div class="c-label">(−) IRRF (15%)</div>
-          <div class="c-valor color-red" id="irrfValor">−R$ 39.850</div>
+        <div class="card-info" style="border-color:#475569">
+          <div class="c-label">🔒 IRRF na data do resgate (15%)</div>
+          <div class="c-valor color-red" id="irrfValor">−R$ 1.822</div>
+          <div style="font-size:10px;color:#64748b">Só paga se resgatar</div>
         </div>
         <div class="card-info">
           <div class="c-label">🏛️ Compensável no IRPJ</div>
-          <div class="c-valor color-orange" id="compensaIR">R$ 39.850</div>
+          <div class="c-valor color-orange" id="compensaIR">R$ 1.822</div>
         </div>
       </div>
 
-      <div style="font-size:13px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">📋 Evolução Mês a Mês</div>
+      <div class="ir-box">
+        <span class="icon">🏛️</span>
+        <div><strong>Importante:</strong> O IRRF de 15% é cobrado <strong>apenas no resgate</strong>, não mês a mês. E é <strong>integralmente compensável</strong> no IRPJ trimestral — não é custo definitivo para empresas no Lucro Real.</div>
+      </div>
+
+      <!-- TABELA MÊS A MÊS (SEM IR) -->
+      <div style="font-size:13px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">📋 Evolução Mês a Mês (sem IR)</div>
       <div style="overflow-x:auto">
         <table class="app-table">
-          <thead><tr><th>Mês</th><th>Total Investido</th><th>Rendimento</th><th>IRRF (15%)</th><th>Saldo</th></tr></thead>
+          <thead><tr><th>Mês</th><th>Aporte</th><th>Total Aportado</th><th>Rendimento do Mês</th><th>Total Acumulado</th></tr></thead>
           <tbody id="tbodyEvolucao"></tbody>
         </table>
       </div>
+      <div style="text-align:center;font-size:11px;color:#64748b;margin-top:6px">IRRF de 15% incide apenas no resgate — não descontado mês a mês</div>
     </div>
   </div>
 </div>
@@ -349,33 +382,24 @@ const VALOR_MAX = 100000000;
 
 function fmt(v){return 'R$ '+Math.round(v).toLocaleString('pt-BR')}
 
-// Máscara de valor com pontos e vírgula
 function mascararValor(el){
-  // Remove tudo que não é dígito
   let raw = el.value.replace(/\D/g, '');
   if(raw === '') raw = '0';
-  // Converte para número
   let num = parseInt(raw, 10);
   if(isNaN(num)) num = 0;
-  // Aplica min/max
   num = Math.min(Math.max(num, VALOR_MIN), VALOR_MAX);
-  // Formata com pontos
   el.value = num.toLocaleString('pt-BR').replace(',', '');
-  // Sincroniza o slider
-  const slider = document.getElementById('valorSlider');
-  slider.value = num;
+  document.getElementById('valorSlider').value = num;
   atualizarCredito();
 }
 
 function sliderValorChange(){
   const val = parseInt(document.getElementById('valorSlider').value) || VALOR_MIN;
-  const input = document.getElementById('valorInput');
-  input.value = val.toLocaleString('pt-BR').replace(',', '');
+  document.getElementById('valorInput').value = val.toLocaleString('pt-BR').replace(',', '');
   atualizarCredito();
 }
 
 function atualizarCredito(){
-  // Pega valor do slider (já sincronizado)
   const valor = parseInt(document.getElementById('valorSlider').value) || VALOR_MIN;
   const prazo = parseInt(document.getElementById('prazoMedio').value)||45;
   const taxaCg = parseFloat(document.getElementById('taxaCg').value)||0;
@@ -387,40 +411,53 @@ function atualizarCredito(){
   document.getElementById('taxaFidcLabel').textContent = taxaFidc.toFixed(1)+'%';
 
   const fator = prazo/30;
-  const custoCG = valor * fator * ((taxaCg + iof)/100);
+
+  // CG
+  const cgJuros = valor * fator * (taxaCg/100);
+  const cgIof = valor * fator * (iof/100);
+  const custoCG = cgJuros + cgIof;
+
+  // FIDC
   const custoFIDC = valor * fator * (taxaFidc/100);
+
   const economia = custoCG - custoFIDC;
   const ecoAnual = economia * 12;
   const bFiscal = economia > 0 ? economia * 0.34 : 0;
+
+  // Custo breakdown
+  document.getElementById('cgTaxaLabel').textContent = taxaCg.toFixed(1)+'%';
+  document.getElementById('cgIofValor').textContent = fmt(cgIof);
+  document.getElementById('cgTotalMes').textContent = fmt(custoCG);
+  document.getElementById('cgTotalAno').textContent = fmt(custoCG * 12);
+
+  document.getElementById('fidcTaxaLabel').textContent = taxaFidc.toFixed(1)+'%';
+  document.getElementById('fidcTotalMes').textContent = fmt(custoFIDC);
+  document.getElementById('fidcTotalAno').textContent = fmt(custoFIDC * 12);
 
   // Economia
   document.getElementById('ecoMensal').textContent = fmt(economia);
   const elEco = document.getElementById('ecoMensal');
   elEco.style.color = economia > 0 ? '#10b981' : '#ef4444';
+  document.getElementById('ecoSub').textContent = economia >= 0 ? 'por mês 🔽' : 'por mês 🔼 (FIDC mais caro)';
 
   document.getElementById('ecoAnual').textContent = fmt(ecoAnual);
   document.getElementById('bfCard').textContent = fmt(bFiscal);
-  document.getElementById('custoCG').textContent = fmt(custoCG);
-  document.getElementById('custoFIDC').textContent = fmt(custoFIDC);
+  document.getElementById('economiaIndicador').textContent = fmt(economia);
 
-  // Comparação de prazo
+  // Prazo
   const difPrazo = prazo - 2;
   const pctPrazo = prazo ? ((prazo - 2) / prazo * 100) : 0;
   document.getElementById('prazoAntes').textContent = prazo;
   document.getElementById('prazoGanho').textContent = '−' + difPrazo;
   document.getElementById('prazoGanhoSub').textContent = 'dias (−' + pctPrazo.toFixed(1) + '%)';
 
-  // Indicadores de liquidez
+  // Indicadores
   document.getElementById('cicloCaixa').textContent = prazo;
   document.getElementById('cicloCaixaSub').textContent = 'dias → 2 dias';
 
-  // NCG = valor total preso pelo prazo médio
-  const ncgAntes = valor;
-  const ncgFidc = valor * (2 / prazo);
-  document.getElementById('ncgAntes').textContent = fmt(ncgAntes);
-  document.getElementById('ncgDepois').textContent = '↓ ' + fmt(ncgFidc) + ' com FIDC';
+  const capitalLiberado = valor - (valor * 2 / prazo);
+  document.getElementById('capitalLiberado').textContent = fmt(capitalLiberado);
 
-  // Liquidez
   if(prazo > 60){
     document.getElementById('liquidezValor').textContent = 'Crítica';
     document.getElementById('liquidezValor').style.color = '#ef4444';
@@ -433,13 +470,9 @@ function atualizarCredito(){
   }
   document.getElementById('liquidezSub').textContent = 'Recebe em 2 dias ⚡';
 
-  // Custo do capital de giro
-  document.getElementById('custoGiroEconomia').textContent = fmt(economia);
-
-  // Pré-preenche a aba de aplicação
+  // Pré-preenche aplicação
   const valAplic = document.getElementById('valAplicar');
-  const ecoMensalNum = Math.round(economia);
-  const capped = Math.min(Math.max(ecoMensalNum, 1000), 5000000);
+  const capped = Math.min(Math.max(Math.round(economia), 1000), 500000);
   valAplic.value = capped;
   document.getElementById('valAplicLabel').textContent = fmt(capped);
 
@@ -447,12 +480,13 @@ function atualizarCredito(){
     atualizarAplicacao();
   }
 
+  // Gráfico
   if(chartCredito) chartCredito.destroy();
   const ctx = document.getElementById('chartCredito').getContext('2d');
   chartCredito = new Chart(ctx, {
     type:'bar',
     data:{
-      labels:['Custo do Capital de Giro'],
+      labels:['Custo Mensal'],
       datasets:[
         {label:'Conta Garantida', data:[Math.round(custoCG)], backgroundColor:'#ef444480', borderColor:'#ef4444', borderWidth:2},
         {label:'FIDC', data:[Math.round(custoFIDC)], backgroundColor:'#10b98180', borderColor:'#10b981', borderWidth:2}
@@ -489,38 +523,35 @@ function atualizarAplicacao(){
 
   const taxaMensal = Math.pow(1 + taxaAnual/100, 1/12) - 1;
 
-  let totalInvestido = 0;
-  let totalRendBruto = 0;
-  let totalIR = 0;
+  let totalAportado = 0;
   let saldo = 0;
   const linhas = [];
 
   for(let m = 1; m <= periodo; m++){
-    totalInvestido += valorMensal;
+    totalAportado += valorMensal;
     const rendMes = (saldo + valorMensal) * taxaMensal;
-    const irMes = rendMes * aliquotaIR;
-    const liqMes = rendMes - irMes;
-    totalRendBruto += rendMes;
-    totalIR += irMes;
-    saldo += valorMensal + liqMes;
-    linhas.push({mes: m, investido: totalInvestido, rend: rendMes, ir: irMes, saldo});
+    saldo += valorMensal + rendMes;
+    linhas.push({mes: m, aporte: valorMensal, totalAportado, rend: rendMes, saldo});
   }
 
-  const ultima = linhas[linhas.length-1];
+  const rendBrutoTotal = saldo - totalAportado;
+  const irrf = rendBrutoTotal * aliquotaIR;
 
-  document.getElementById('totalAplicado').textContent = fmt(totalInvestido);
-  document.getElementById('rendBruto').textContent = fmt(totalRendBruto);
-  document.getElementById('irrfValor').textContent = '−'+fmt(totalIR);
-  document.getElementById('compensaIR').textContent = fmt(totalIR);
-  document.getElementById('totalAcumulado').textContent = fmt(ultima ? ultima.saldo : 0);
+  document.getElementById('totalAportado').textContent = fmt(totalAportado);
+  document.getElementById('rendBruto').textContent = fmt(rendBrutoTotal);
+  document.getElementById('irrfValor').textContent = '−' + fmt(irrf);
+  document.getElementById('compensaIR').textContent = fmt(irrf);
+  document.getElementById('totalAcumulado').textContent = fmt(saldo);
+  document.getElementById('periodoExibido').textContent = periodo + ' aportes mensais de ' + fmt(valorMensal);
 
+  // Tabela
   const tbody = document.getElementById('tbodyEvolucao');
   tbody.innerHTML = '';
   const step = periodo <= 12 ? 1 : Math.ceil(periodo/12);
   linhas.forEach((l, idx) => {
     if((idx+1) % step !== 0 && idx !== linhas.length-1 && idx !== 0) return;
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td style="font-weight:700;color:#f1c40f">${l.mes}º</td><td>${fmt(l.investido)}</td><td class="color-green">${fmt(l.rend)}</td><td class="color-red">−${fmt(l.ir)}</td><td style="font-weight:700">${fmt(l.saldo)}</td>`;
+    tr.innerHTML = `<td style="font-weight:700;color:#f1c40f">${l.mes}º</td><td>${fmt(l.aporte)}</td><td>${fmt(l.totalAportado)}</td><td class="color-green">${fmt(l.rend)}</td><td style="font-weight:700">${fmt(l.saldo)}</td>`;
     tbody.appendChild(tr);
   });
 }
