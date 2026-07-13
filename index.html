@@ -27,7 +27,7 @@ body{background:#0f172a;color:#e2e8f0;min-height:100vh;padding:20px}
 
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:16px}
 @media(max-width:640px){.grid-2{grid-template-columns:1fr}}
-@media(max-width:480px){.grid-cards{grid-template-columns:1fr}.grid-2{grid-template-columns:1fr}.grid-indicadores{grid-template-columns:1fr}.grid-fixos{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.grid-cards{grid-template-columns:1fr}.grid-2{grid-template-columns:1fr}.grid-indicadores{grid-template-columns:1fr}}
 
 .input-group{margin-bottom:16px}
 .input-group label{display:flex;justify-content:space-between;font-size:14px;color:#cbd5e1;margin-bottom:4px}
@@ -40,6 +40,12 @@ body{background:#0f172a;color:#e2e8f0;min-height:100vh;padding:20px}
 .input-valor-wrap input[type=text]{width:100%;padding:12px 14px 12px 42px;background:#0f172a;border:1px solid #334155;border-radius:8px;color:#e2e8f0;font-size:18px;font-weight:700;text-align:left;outline:none;transition:border .2s}
 .input-valor-wrap input[type=text]:focus{border-color:#3b82f6;box-shadow:0 0 0 2px rgba(59,130,246,.15)}
 .input-valor-wrap input[type=text]::placeholder{color:#475569;font-weight:400}
+
+.toggle-method{display:flex;gap:8px;margin-bottom:16px;padding:10px;background:#0f172a;border-radius:8px;border:1px solid #334155}
+.toggle-method label{display:flex;align-items:center;gap:6px;font-size:13px;color:#cbd5e1;cursor:pointer;padding:6px 12px;border-radius:6px;border:1px solid #334155;background:#1e293b;transition:all .2s}
+.toggle-method label:hover{border-color:#3b82f6}
+.toggle-method input[type=radio]{accent-color:#3b82f6}
+.toggle-method label.selected{border-color:#f1c40f;background:#1e3a5f;color:#f1c40f}
 
 .resultao{background:linear-gradient(135deg,#064e3b,#022c22);border:2px solid #10b981;border-radius:12px;padding:20px;text-align:center;margin-bottom:16px}
 .resultao .r-label{font-size:13px;color:#94a3b8;margin-bottom:2px}
@@ -120,6 +126,7 @@ body{background:#fff;padding:10px}
 .indicador-card{background:#f1f5f9!important}
 .comp-dias{background:#f1f5f9!important}
 .grid-fixos{background:#f1f5f9!important;border-color:#ccc!important}
+.toggle-method{background:#f1f5f9!important;border-color:#ccc!important}
 }
 </style>
 </head>
@@ -166,6 +173,18 @@ body{background:#fff;padding:10px}
         </div>
       </div>
 
+      <!-- MÉTODO DE CÁLCULO -->
+      <div class="toggle-method">
+        <label class="selected" id="metodoSimplesLabel">
+          <input type="radio" name="metodo" value="simples" checked onchange="setMetodo('simples')">
+          📐 Juros Simples (Pro rata)
+        </label>
+        <label id="metodoCompostoLabel">
+          <input type="radio" name="metodo" value="composto" onchange="setMetodo('composto')">
+          📈 Juros Compostos (Exponencial)
+        </label>
+      </div>
+
       <!-- CUSTO BREAKDOWN -->
       <div class="grid-2" style="gap:12px;margin-bottom:16px">
         <div class="custo-breakdown">
@@ -175,7 +194,7 @@ body{background:#fff;padding:10px}
             <span class="cl-valor"><span id="cgTaxaRef">4,0</span>% × <span id="prazoRefCg">45</span>d ÷30 = <span id="cgFatorRef">1,500</span> meses</span>
           </div>
           <div class="custo-linha">
-            <span class="cl-label">= R$ <span id="cgBaseRef">5.000.000</span> × 1,500 × 4,0%</span>
+            <span class="cl-label">= R$ <span id="cgBaseRef">5.000.000</span> × <span id="cgFatorRef2">1,500</span> × <span id="cgTaxaRef2">4,0</span>%</span>
             <span class="cl-valor" id="cgJurosValor">R$ 30.000</span>
           </div>
           <div class="custo-linha">
@@ -198,7 +217,7 @@ body{background:#fff;padding:10px}
             <span class="cl-valor"><span id="fidcTaxaRef">3,0</span>% × <span id="prazoRefFidc">45</span>d ÷30 = <span id="fidcFatorRef">1,500</span> meses</span>
           </div>
           <div class="custo-linha">
-            <span class="cl-label">= R$ <span id="fidcBaseRef">5.000.000</span> × 1,500 × 3,0%</span>
+            <span class="cl-label">= R$ <span id="fidcBaseRef">5.000.000</span> × <span id="fidcFatorRef2">1,500</span> × <span id="fidcTaxaRef2">3,0</span>%</span>
             <span class="cl-valor" id="fidcJurosValor">R$ 22.500</span>
           </div>
           <div class="custo-linha">
@@ -416,11 +435,24 @@ body{background:#fff;padding:10px}
 
 <script>
 let chartCredito = null;
+let metodoAtual = 'simples';
 
 const VALOR_MIN = 5000000;
 const VALOR_MAX = 100000000;
 
 function fmt(v){return 'R$ '+Math.round(v).toLocaleString('pt-BR')}
+
+function setMetodo(val){
+  metodoAtual = val;
+  document.querySelectorAll('.toggle-method label').forEach(el => el.classList.remove('selected'));
+  document.querySelectorAll('.toggle-method input').forEach(inp => {
+    if(inp.value === val) inp.checked = true;
+  });
+  const labels = document.querySelectorAll('.toggle-method label');
+  if(val === 'simples') labels[0].classList.add('selected');
+  else labels[1].classList.add('selected');
+  atualizarCredito();
+}
 
 function mascararValor(el){
   let raw = el.value.replace(/\D/g, '');
@@ -453,39 +485,58 @@ function atualizarCredito(){
   const cAudMes = cAudAnual / 12;
   const fixos = cAdm + cCust + cGest + cAudMes;
 
+  const fator = prazo / 30;
+
   document.getElementById('prazoLabel').textContent = prazo;
   document.getElementById('taxaCgLabel').textContent = taxaCg.toFixed(1)+'%';
   document.getElementById('taxaFidcLabel').textContent = taxaFidc.toFixed(1)+'%';
 
-  const fator = prazo/30;
-
-  // CG
-  const cgJuros = valor * fator * (taxaCg/100);
+  // --- CÁLCULO CG ---
+  let cgJuros, cgFormula;
+  if(metodoAtual === 'composto'){
+    // Juros Compostos: M = C × (1 + i)^(d/30)  →  J = C × [(1+i)^(d/30) - 1]
+    cgJuros = valor * (Math.pow(1 + taxaCg/100, fator) - 1);
+    cgFormula = 'composto';
+  } else {
+    // Juros Simples: J = C × i × (d/30)
+    cgJuros = valor * fator * (taxaCg/100);
+    cgFormula = 'simples';
+  }
   const cgIof = valor * fator * (iof/100);
   const custoCG = cgJuros + cgIof;
 
-  // FIDC
-  const fidcJuros = valor * fator * (taxaFidc/100);
+  // --- CÁLCULO FIDC ---
+  let fidcJuros;
+  if(metodoAtual === 'composto'){
+    // Para FIDC com juros compostos (desconto composto racional): D = VN × [1 - (1+i)^(-d/30)]
+    fidcJuros = valor * (1 - Math.pow(1 + taxaFidc/100, -fator));
+  } else {
+    fidcJuros = valor * fator * (taxaFidc/100);
+  }
   const custoFIDC = fidcJuros + fixos;
 
   const economia = custoCG - custoFIDC;
   const ecoAnual = economia * 12;
   const bFiscal = economia > 0 ? economia * 0.34 : 0;
 
-  // Custo breakdown CG — fórmula explícita
+  // --- ATUALIZA DISPLAY CG ---
   document.getElementById('cgTaxaRef').textContent = taxaCg.toFixed(1);
+  document.getElementById('cgTaxaRef2').textContent = taxaCg.toFixed(1);
   document.getElementById('prazoRefCg').textContent = prazo;
   document.getElementById('cgFatorRef').textContent = fator.toFixed(3);
+  document.getElementById('cgFatorRef2').textContent = fator.toFixed(3);
   document.getElementById('cgBaseRef').textContent = Math.round(valor).toLocaleString('pt-BR');
   document.getElementById('cgJurosValor').textContent = fmt(cgJuros);
   document.getElementById('cgIofValor').textContent = fmt(cgIof);
   document.getElementById('cgTotalMes').textContent = fmt(custoCG);
   document.getElementById('cgTotalAno').textContent = fmt(custoCG * 12);
 
-  // Custo breakdown FIDC — fórmula explícita
+  // --- ATUALIZA DISPLAY FIDC ---
   document.getElementById('fidcTaxaRef').textContent = taxaFidc.toFixed(1);
+  document.getElementById('fidcTaxaRef2').textContent = taxaFidc.toFixed(1);
   document.getElementById('prazoRefFidc').textContent = prazo;
   document.getElementById('fidcFatorRef').textContent = fator.toFixed(3);
+  document.getElementById('fidcFatorRef2').textContent = fator.toFixed(3);
   document.getElementById('fidcBaseRef').textContent = Math.round(valor).toLocaleString('pt-BR');
   document.getElementById('fidcJurosValor').textContent = fmt(fidcJuros);
   document.getElementById('fidcAdm').textContent = fmt(cAdm);
@@ -495,7 +546,7 @@ function atualizarCredito(){
   document.getElementById('fidcTotalMes').textContent = fmt(custoFIDC);
   document.getElementById('fidcTotalAno').textContent = fmt(custoFIDC * 12);
 
-  // Economia
+  // --- ECONOMIA ---
   document.getElementById('ecoMensal').textContent = fmt(economia);
   const elEco = document.getElementById('ecoMensal');
   if(economia > 0){
@@ -505,26 +556,23 @@ function atualizarCredito(){
     elEco.style.color = '#ef4444';
     document.getElementById('ecoSub').textContent = 'por mês 🔼 (FIDC mais caro que CG)';
   }
-
   document.getElementById('ecoAnual').textContent = fmt(ecoAnual);
   document.getElementById('ecoAnual').style.color = ecoAnual > 0 ? '#f1c40f' : '#ef4444';
   document.getElementById('bfCard').textContent = fmt(bFiscal);
   document.getElementById('economiaIndicador').textContent = fmt(economia);
 
-  // Prazo
+  // --- PRAZO ---
   const difPrazo = prazo - 2;
   const pctPrazo = prazo ? ((prazo - 2) / prazo * 100) : 0;
   document.getElementById('prazoAntes').textContent = prazo;
   document.getElementById('prazoGanho').textContent = '−' + difPrazo;
   document.getElementById('prazoGanhoSub').textContent = 'dias (−' + pctPrazo.toFixed(1) + '%)';
 
-  // Indicadores
+  // --- INDICADORES ---
   document.getElementById('cicloCaixa').textContent = prazo;
   document.getElementById('cicloCaixaSub').textContent = 'dias → 2 dias';
-
   const capitalLiberado = valor - (valor * 2 / prazo);
   document.getElementById('capitalLiberado').textContent = fmt(capitalLiberado);
-
   if(prazo > 60){
     document.getElementById('liquidezValor').textContent = 'Crítica';
     document.getElementById('liquidezValor').style.color = '#ef4444';
@@ -537,7 +585,7 @@ function atualizarCredito(){
   }
   document.getElementById('liquidezSub').textContent = 'Recebe em 2 dias ⚡';
 
-  // Pré-preenche aplicação
+  // --- PRÉ-PREENCHER APLICAÇÃO ---
   const valAplic = document.getElementById('valAplicar');
   const capped = Math.min(Math.max(Math.round(economia), 0), 500000);
   valAplic.value = capped;
@@ -547,7 +595,7 @@ function atualizarCredito(){
     atualizarAplicacao();
   }
 
-  // Gráfico
+  // --- GRÁFICO ---
   if(chartCredito) chartCredito.destroy();
   const ctx = document.getElementById('chartCredito').getContext('2d');
   chartCredito = new Chart(ctx, {
