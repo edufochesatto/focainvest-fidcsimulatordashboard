@@ -52,15 +52,16 @@ body{background:#0f172a;color:#e2e8f0;min-height:100vh;padding:20px}
 .card-info .c-valor{font-size:18px;font-weight:700;margin-top:2px}
 
 /* Custo breakdown */
-.custo-breakdown{background:#0f172a;border-radius:10px;padding:16px;margin-bottom:16px;border:1px solid #334155}
+.custo-breakdown{background:#0f172a;border-radius:10px;padding:16px;border:1px solid #334155}
 .custo-breakdown .cb-title{font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:.3px;margin-bottom:10px}
-.custo-linha{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #1e293b;font-size:14px}
+.custo-linha{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #1e293b;font-size:13px}
 .custo-linha:last-child{border-bottom:none}
 .custo-linha .cl-label{color:#cbd5e1}
-.custo-linha .cl-valor{font-weight:600}
+.custo-linha .cl-valor{font-weight:600;font-size:13px}
 .custo-linha.total{font-weight:700;font-size:15px;padding-top:8px;margin-top:4px;border-top:2px solid #334155}
 .custo-linha.total .cl-label{color:#f1c40f}
 .custo-linha.total .cl-valor{color:#f1c40f}
+.custo-linha .cl-destaque{color:#3b82f6;font-weight:600}
 
 .comp-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
 .comp-item{background:#0f172a;border-radius:10px;padding:14px;text-align:center;border:1px solid #334155}
@@ -110,11 +111,7 @@ body{background:#fff;padding:10px}
 .card-info{background:#f1f5f9!important}
 .comp-item{background:#f1f5f9!important}
 .comp-item.destaque{background:#f0fdf4!important;border-color:#10b981!important}
-.custo-breakdown{background:#f1f5f9!important}
-.custo-linha{color:#000!important}
-.custo-linha .cl-label{color:#475569!important}
-.custo-linha.total{border-top-color:#ccc!important}
-.custo-linha.total .cl-label,.custo-linha.total .cl-valor{color:#b45309!important}
+.custo-breakdown{background:#f1f5f9!important}.custo-linha{color:#000!important}.custo-linha .cl-label{color:#475569!important}.custo-linha.total{border-top-color:#ccc!important}.custo-linha.total .cl-label,.custo-linha.total .cl-valor{color:#b45309!important}
 .info-box{background:#eff6ff!important;border-color:#3b82f6!important;color:#1e40af!important}
 .ir-box{background:#fffbeb!important;border-color:#f59e0b!important;color:#92400e!important}
 .tabs,.tab-btn,.simulador-section{display:none!important}
@@ -163,13 +160,13 @@ body{background:#fff;padding:10px}
           <div class="input-group">
             <label>📊 Taxa do FIDC <span id="taxaFidcLabel">3,0%</span></label>
             <input type="range" id="taxaFidc" min="0.5" max="5" step="0.1" value="3" oninput="atualizarCredito()">
-            <div class="dica">Sem IOF — taxa menor que a do banco</div>
+            <div class="dica">Sem IOF — inclui custos fixos abaixo</div>
           </div>
         </div>
       </div>
 
       <!-- CUSTO BREAKDOWN -->
-      <div class="grid-2" style="gap:12px">
+      <div class="grid-2" style="gap:12px;margin-bottom:16px">
         <div class="custo-breakdown">
           <div class="cb-title">🏦 Conta Garantida</div>
           <div class="custo-linha">
@@ -177,54 +174,94 @@ body{background:#fff;padding:10px}
             <span class="cl-valor" id="cgTaxaLabel">4,0%</span>
           </div>
           <div class="custo-linha">
+            <span class="cl-label">Juros (<span id="cgTaxaRef">4,0</span>% × <span id="cgFatorRef">1,500</span>)</span>
+            <span class="cl-valor" id="cgJurosValor">R$ 30.000</span>
+          </div>
+          <div class="custo-linha">
             <span class="cl-label">IOF (0,38%)</span>
             <span class="cl-valor color-red" id="cgIofValor">R$ 2.850</span>
           </div>
           <div class="custo-linha total">
-            <span class="cl-label">Custo Total CG / mês</span>
-            <span class="cl-valor" id="cgTotalMes">R$ 32.300</span>
+            <span class="cl-label">💰 Custo Total CG / mês</span>
+            <span class="cl-valor" id="cgTotalMes">R$ 32.850</span>
           </div>
-          <div class="custo-linha" style="padding-top:6px">
+          <div class="custo-linha">
             <span class="cl-label">📅 Custo no ano</span>
-            <span class="cl-valor color-red" id="cgTotalAno">R$ 387.600</span>
+            <span class="cl-valor color-red" id="cgTotalAno">R$ 394.200</span>
           </div>
         </div>
         <div class="custo-breakdown">
           <div class="cb-title">⚡ FIDC</div>
           <div class="custo-linha">
-            <span class="cl-label">Taxa</span>
-            <span class="cl-valor" id="fidcTaxaLabel">3,0%</span>
+            <span class="cl-label">Juros (<span id="fidcTaxaRef">3,0</span>% × <span id="fidcFatorRef">1,500</span>)</span>
+            <span class="cl-valor" id="fidcJurosValor">R$ 22.500</span>
+          </div>
+          <div class="custo-linha">
+            <span class="cl-label">Administração</span>
+            <span class="cl-valor" id="fidcAdm">R$ 15.000</span>
+          </div>
+          <div class="custo-linha">
+            <span class="cl-label">Custódia</span>
+            <span class="cl-valor" id="fidcCustodia">R$ 1.000</span>
+          </div>
+          <div class="custo-linha">
+            <span class="cl-label">Gestão</span>
+            <span class="cl-valor" id="fidcGestao">R$ 12.000</span>
+          </div>
+          <div class="custo-linha">
+            <span class="cl-label">Auditoria + Estruturação (÷12)</span>
+            <span class="cl-valor" id="fidcAuditoria">R$ 4.000</span>
           </div>
           <div class="custo-linha">
             <span class="cl-label">IOF</span>
             <span class="cl-valor color-green">R$ 0</span>
           </div>
           <div class="custo-linha total">
-            <span class="cl-label">Custo Total FIDC / mês</span>
-            <span class="cl-valor" id="fidcTotalMes">R$ 22.500</span>
+            <span class="cl-label">💰 Custo Total FIDC / mês</span>
+            <span class="cl-valor" id="fidcTotalMes">R$ 54.500</span>
           </div>
-          <div class="custo-linha" style="padding-top:6px">
+          <div class="custo-linha">
             <span class="cl-label">📅 Custo no ano</span>
-            <span class="cl-valor color-green" id="fidcTotalAno">R$ 270.000</span>
+            <span class="cl-valor color-green" id="fidcTotalAno">R$ 654.000</span>
           </div>
+        </div>
+      </div>
+
+      <!-- CUSTOS FIXOS - EDITÁVEIS -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px;padding:12px;background:#0f172a;border-radius:8px;border:1px solid #334155">
+        <div>
+          <label style="font-size:11px;color:#94a3b8;display:block;margin-bottom:2px">Administração</label>
+          <input type="number" id="custoAdm" value="15000" step="1000" min="0" oninput="atualizarCredito()" style="width:100%;padding:6px 8px;background:#1e293b;border:1px solid #334155;border-radius:6px;color:#e2e8f0;font-size:13px">
+        </div>
+        <div>
+          <label style="font-size:11px;color:#94a3b8;display:block;margin-bottom:2px">Custódia</label>
+          <input type="number" id="custo Custodia" value="1000" step="100" min="0" oninput="atualizarCredito()" style="width:100%;padding:6px 8px;background:#1e293b;border:1px solid #334155;border-radius:6px;color:#e2e8f0;font-size:13px">
+        </div>
+        <div>
+          <label style="font-size:11px;color:#94a3b8;display:block;margin-bottom:2px">Gestão</label>
+          <input type="number" id="custoGestao" value="12000" step="1000" min="0" oninput="atualizarCredito()" style="width:100%;padding:6px 8px;background:#1e293b;border:1px solid #334155;border-radius:6px;color:#e2e8f0;font-size:13px">
+        </div>
+        <div>
+          <label style="font-size:11px;color:#94a3b8;display:block;margin-bottom:2px">Auditoria+Estrut.(ano)</label>
+          <input type="number" id="custoAuditoria" value="48000" step="1000" min="0" oninput="atualizarCredito()" style="width:100%;padding:6px 8px;background:#1e293b;border:1px solid #334155;border-radius:6px;color:#e2e8f0;font-size:13px">
         </div>
       </div>
 
       <!-- ECONOMIA -->
       <div class="resultao">
         <div class="r-label">💰 Economia com FIDC</div>
-        <div class="r-valor" id="ecoMensal">R$ 9.800</div>
+        <div class="r-valor" id="ecoMensal">R$ -21.650</div>
         <div class="r-sub" id="ecoSub">por mês</div>
       </div>
 
       <div class="grid-cards">
         <div class="card-info">
-          <div class="c-label">📈 Economia no Ano</div>
-          <div class="c-valor color-yellow" id="ecoAnual">R$ 117.600</div>
+          <div class="c-label">📈 Economia (ou Perda) no Ano</div>
+          <div class="c-valor color-yellow" id="ecoAnual">R$ -259.800</div>
         </div>
         <div class="card-info">
           <div class="c-label">🏛️ Benefício Fiscal (IRPJ+CSLL — 34%)</div>
-          <div class="c-valor color-orange" id="bfCard">R$ 39.984</div>
+          <div class="c-valor color-orange" id="bfCard">R$ 0</div>
           <div style="font-size:10px;color:#64748b">Apenas Lucro Real</div>
         </div>
       </div>
@@ -290,7 +327,7 @@ body{background:#fff;padding:10px}
             <span class="ic-desc">Redução mensal com FIDC</span>
           </div>
           <div class="ic-right">
-            <div class="ic-valor color-green" id="economiaIndicador">R$ 9.800</div>
+            <div class="ic-valor color-green" id="economiaIndicador">R$ -21.650</div>
             <div class="ic-sub">por mês</div>
           </div>
         </div>
@@ -312,8 +349,8 @@ body{background:#fff;padding:10px}
         <div>
           <div class="input-group">
             <label>💰 Aporte Mensal <span id="valAplicLabel">R$ 9.800</span></label>
-            <input type="range" id="valAplicar" min="1000" max="500000" step="100" value="9800" oninput="atualizarAplicacao()">
-            <div class="dica">Pré-preenchido com a economia mensal</div>
+            <input type="range" id="valAplicar" min="0" max="500000" step="100" value="9800" oninput="atualizarAplicacao()">
+            <div class="dica">Pré-preenchido com a economia mensal — se negativa, ajuste manual</div>
           </div>
         </div>
         <div>
@@ -329,7 +366,6 @@ body{background:#fff;padding:10px}
         </div>
       </div>
 
-      <!-- RESUMO -->
       <div class="resultao">
         <div class="r-label">💰 Total Acumulado (sem IR)</div>
         <div class="r-valor" id="totalAcumulado" style="color:#f1c40f">R$ 129.748</div>
@@ -361,7 +397,6 @@ body{background:#fff;padding:10px}
         <div><strong>Importante:</strong> O IRRF de 15% é cobrado <strong>apenas no resgate</strong>, não mês a mês. E é <strong>integralmente compensável</strong> no IRPJ trimestral — não é custo definitivo para empresas no Lucro Real.</div>
       </div>
 
-      <!-- TABELA MÊS A MÊS (SEM IR) -->
       <div style="font-size:13px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">📋 Evolução Mês a Mês (sem IR)</div>
       <div style="overflow-x:auto">
         <table class="app-table">
@@ -406,6 +441,14 @@ function atualizarCredito(){
   const taxaFidc = parseFloat(document.getElementById('taxaFidc').value)||0;
   const iof = 0.38;
 
+  // Custos fixos do FIDC
+  const cAdm = parseFloat(document.getElementById('custoAdm').value)||0;
+  const cCust = parseFloat(document.getElementById('custo Custodia').value)||0;
+  const cGest = parseFloat(document.getElementById('custoGestao').value)||0;
+  const cAudAnual = parseFloat(document.getElementById('custoAuditoria').value)||0;
+  const cAudMes = cAudAnual / 12;
+  const fixos = cAdm + cCust + cGest + cAudMes;
+
   document.getElementById('prazoLabel').textContent = prazo;
   document.getElementById('taxaCgLabel').textContent = taxaCg.toFixed(1)+'%';
   document.getElementById('taxaFidcLabel').textContent = taxaFidc.toFixed(1)+'%';
@@ -418,29 +461,46 @@ function atualizarCredito(){
   const custoCG = cgJuros + cgIof;
 
   // FIDC
-  const custoFIDC = valor * fator * (taxaFidc/100);
+  const fidcJuros = valor * fator * (taxaFidc/100);
+  const custoFIDC = fidcJuros + fixos;
 
   const economia = custoCG - custoFIDC;
   const ecoAnual = economia * 12;
   const bFiscal = economia > 0 ? economia * 0.34 : 0;
 
-  // Custo breakdown
+  // Custo breakdown CG
   document.getElementById('cgTaxaLabel').textContent = taxaCg.toFixed(1)+'%';
+  document.getElementById('cgTaxaRef').textContent = taxaCg.toFixed(1);
+  document.getElementById('cgFatorRef').textContent = fator.toFixed(3);
+  document.getElementById('cgJurosValor').textContent = fmt(cgJuros);
   document.getElementById('cgIofValor').textContent = fmt(cgIof);
   document.getElementById('cgTotalMes').textContent = fmt(custoCG);
   document.getElementById('cgTotalAno').textContent = fmt(custoCG * 12);
 
-  document.getElementById('fidcTaxaLabel').textContent = taxaFidc.toFixed(1)+'%';
+  // Custo breakdown FIDC
+  document.getElementById('fidcTaxaRef').textContent = taxaFidc.toFixed(1);
+  document.getElementById('fidcFatorRef').textContent = fator.toFixed(3);
+  document.getElementById('fidcJurosValor').textContent = fmt(fidcJuros);
+  document.getElementById('fidcAdm').textContent = fmt(cAdm);
+  document.getElementById('fidcCustodia').textContent = fmt(cCust);
+  document.getElementById('fidcGestao').textContent = fmt(cGest);
+  document.getElementById('fidcAuditoria').textContent = fmt(cAudMes);
   document.getElementById('fidcTotalMes').textContent = fmt(custoFIDC);
   document.getElementById('fidcTotalAno').textContent = fmt(custoFIDC * 12);
 
   // Economia
   document.getElementById('ecoMensal').textContent = fmt(economia);
   const elEco = document.getElementById('ecoMensal');
-  elEco.style.color = economia > 0 ? '#10b981' : '#ef4444';
-  document.getElementById('ecoSub').textContent = economia >= 0 ? 'por mês 🔽' : 'por mês 🔼 (FIDC mais caro)';
+  if(economia > 0){
+    elEco.style.color = '#10b981';
+    document.getElementById('ecoSub').textContent = 'por mês 🔽';
+  } else {
+    elEco.style.color = '#ef4444';
+    document.getElementById('ecoSub').textContent = 'por mês 🔼 (FIDC mais caro que CG)';
+  }
 
   document.getElementById('ecoAnual').textContent = fmt(ecoAnual);
+  document.getElementById('ecoAnual').style.color = ecoAnual > 0 ? '#f1c40f' : '#ef4444';
   document.getElementById('bfCard').textContent = fmt(bFiscal);
   document.getElementById('economiaIndicador').textContent = fmt(economia);
 
@@ -472,7 +532,7 @@ function atualizarCredito(){
 
   // Pré-preenche aplicação
   const valAplic = document.getElementById('valAplicar');
-  const capped = Math.min(Math.max(Math.round(economia), 1000), 500000);
+  const capped = Math.min(Math.max(Math.round(economia), 0), 500000);
   valAplic.value = capped;
   document.getElementById('valAplicLabel').textContent = fmt(capped);
 
@@ -544,7 +604,6 @@ function atualizarAplicacao(){
   document.getElementById('totalAcumulado').textContent = fmt(saldo);
   document.getElementById('periodoExibido').textContent = periodo + ' aportes mensais de ' + fmt(valorMensal);
 
-  // Tabela
   const tbody = document.getElementById('tbodyEvolucao');
   tbody.innerHTML = '';
   const step = periodo <= 12 ? 1 : Math.ceil(periodo/12);
